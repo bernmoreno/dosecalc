@@ -412,7 +412,13 @@ export default function DoseCalcCalculatorTab({ initialMedicationId = "" }) {
 
         <label className="field">
           <span>Weight</span>
-          <input type="number" min="0" step="0.1" value={weightValue} onChange={(e) => setWeightValue(Number(e.target.value))} />
+          <input
+            type="number"
+            min="0"
+            step="0.1"
+            value={weightValue === 0 ? "" : weightValue}
+            onChange={(e) => setWeightValue(e.target.value === "" ? 0 : Number(e.target.value))}
+          />
         </label>
 
         <label className="field">

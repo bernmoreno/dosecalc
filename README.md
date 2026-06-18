@@ -15,6 +15,7 @@ A React medication dosing assistant focused on age/weight calculations, dose fre
   - calculate daily dose from mg/kg/day
   - split into per-dose amount by frequency
   - select tablet/pill and liquid strengths in Calculator so conversions use the exact chosen strength
+  - age/weight numeric inputs hide default `0` to keep entry fields clean
 - **Age-aware dosing workflow** with pediatric/adult handling.
 - **Pediatric reference equations**:
   - Clark’s rule

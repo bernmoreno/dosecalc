@@ -69,7 +69,13 @@ export default function ByAgeTab() {
         </label>
         <label className="field">
           <span>Weight (kg)</span>
-          <input type="number" min="0" step="0.1" value={weightKg} onChange={(e) => setWeightKg(Number(e.target.value))} />
+          <input
+            type="number"
+            min="0"
+            step="0.1"
+            value={weightKg === 0 ? "" : weightKg}
+            onChange={(e) => setWeightKg(e.target.value === "" ? 0 : Number(e.target.value))}
+          />
         </label>
         <label className="field">
           <span>Medication</span>
