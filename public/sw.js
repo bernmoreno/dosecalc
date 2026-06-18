@@ -1,12 +1,12 @@
 const CACHE_NAME = "dosecalc-v2";
 const APP_SHELL = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/dosecalc-icon.svg",
-  "/favicon.ico",
-  "/logo192.png",
-  "/logo512.png"
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./dosecalc-icon.svg",
+  "./favicon.ico",
+  "./logo192.png",
+  "./logo512.png"
 ];
 
 self.addEventListener("install", (event) => {
@@ -44,7 +44,7 @@ self.addEventListener("fetch", (event) => {
       .catch(async () => {
         const cached = await caches.match(event.request);
         if (cached) return cached;
-        if (isNavigation) return caches.match("/index.html");
+        if (isNavigation) return caches.match("./index.html");
         return new Response("Offline", { status: 503, statusText: "Service Unavailable" });
       })
   );

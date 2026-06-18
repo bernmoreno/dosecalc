@@ -19,7 +19,8 @@ reportWebVitals();
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     if (process.env.NODE_ENV === "production") {
-      navigator.serviceWorker.register("/sw.js").catch(() => {
+      const swUrl = `${process.env.PUBLIC_URL}/sw.js`;
+      navigator.serviceWorker.register(swUrl).catch(() => {
         // service worker registration is optional
       });
       return;

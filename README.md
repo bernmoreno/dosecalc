@@ -189,6 +189,36 @@ It also supports repositories that still use `master`.
 
 ---
 
+## Make dosecalc downloadable on all devices
+
+Once deployed on GitHub Pages with HTTPS, dosecalc works as an installable web app (PWA).
+
+### Android phones/tablets (Chrome/Edge)
+
+- Open `https://bernmoreno.github.io/dosecalc/`
+- Tap **Install App** (inside app header) or browser menu → **Install app**
+- App appears on home screen and app drawer
+
+### iPhone / iPad (Safari)
+
+- Open `https://bernmoreno.github.io/dosecalc/` in Safari
+- Tap **Share**
+- Tap **Add to Home Screen**
+- The app opens like a standalone app icon
+
+### Desktop / Laptop (Windows, macOS, Chromebook)
+
+- Open `https://bernmoreno.github.io/dosecalc/` in Chrome or Edge
+- Click the **Install** icon in the address bar (or app menu)
+- App installs as a standalone desktop app window
+
+### Works offline after first load
+
+- The service worker caches app shell files after first successful online load
+- If network is lost later, users can still open the installed app
+
+---
+
 ## Data protection for public use
 
 - Saved entries are stored in **browser local storage** (client-side only in this app).
