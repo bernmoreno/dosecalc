@@ -15,3 +15,20 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    if (process.env.NODE_ENV === "production") {
+      navigator.serviceWorker.register("/sw.js").catch(() => {
+        // service worker registration is optional
+      });
+      return;
+    }
+
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => registration.unregister());
+    }).catch(() => {
+      // ignore cleanup errors in development
+    });
+  });
+}
