@@ -62,7 +62,13 @@ function parseLiquidStrengthOption(strength, medicationForms = []) {
   };
 }
 
-export default function DoseCalcCalculatorTab({ initialMedicationId = "" }) {
+export default function DoseCalcCalculatorTab({
+  initialMedicationId = "",
+  medicationCategories = MEDICATION_CATEGORIES,
+  heading = "Calculator",
+  description = "Calculates dose by age + weight using mg/kg/day logic, then splits by doses/day and converts to tablets or liquid where available.",
+  medicationLabel = "Medication"
+}) {
   const [selectedMedicationId, setSelectedMedicationId] = useState("");
   const [selectedSolidStrengthKey, setSelectedSolidStrengthKey] = useState("");
   const [selectedAnyStrengthKey, setSelectedAnyStrengthKey] = useState("");
@@ -82,7 +88,7 @@ export default function DoseCalcCalculatorTab({ initialMedicationId = "" }) {
   const [showResult, setShowResult] = useState(false);
 
   const selectedMedication = useMemo(() => {
-    for (const category of MEDICATION_CATEGORIES) {
+    for (const category of medicationCategories) {
       const found = category.medications.find((med) => med.id === selectedMedicationId);
       if (found) {
         return {
@@ -94,7 +100,7 @@ export default function DoseCalcCalculatorTab({ initialMedicationId = "" }) {
       }
     }
     return null;
-  }, [selectedMedicationId]);
+  }, [selectedMedicationId, medicationCategories]);
 
   const tabletStrengthOptions = useMemo(() => {
     const strengths = selectedMedication?.strengths ?? [];
@@ -153,10 +159,18 @@ export default function DoseCalcCalculatorTab({ initialMedicationId = "" }) {
     [liquidStrengthOptions, selectedLiquidStrengthKey]
   );
 
+  const selectedSolidFormLabel = selectedTabletStrength
+    ? "tablet"
+    : selectedPillStrength
+      ? "pill"
+      : selectedCapsuleStrength
+        ? "capsule"
+        : "solid unit";
+
   useEffect(() => {
     if (!initialMedicationId) return;
     let exists = false;
-    for (const category of MEDICATION_CATEGORIES) {
+    for (const category of medicationCategories) {
       if (category.medications.some((med) => med.id === initialMedicationId)) {
         exists = true;
         break;
@@ -165,7 +179,7 @@ export default function DoseCalcCalculatorTab({ initialMedicationId = "" }) {
     if (exists) {
       setSelectedMedicationId(initialMedicationId);
     }
-  }, [initialMedicationId]);
+  }, [initialMedicationId, medicationCategories]);
 
   const weightKg = useMemo(() => {
     if (!Number.isFinite(weightValue) || weightValue <= 0) return NaN;
@@ -292,8 +306,8 @@ export default function DoseCalcCalculatorTab({ initialMedicationId = "" }) {
       selectedCapsuleStrength?.label ? `Selected capsule strength: ${selectedCapsuleStrength.label}` : "Selected capsule strength: n/a",
       selectedLiquidStrength?.label ? `Selected liquid strength: ${selectedLiquidStrength.label}` : "Selected liquid strength: n/a",
       calculation.tabletsPerDose != null
-        ? `Tablet conversion: ${calculation.tabletsPerDose} tablets/dose (${calculation.tabletStrengthMg} mg each)`
-        : "Tablet conversion: n/a",
+        ? `Solid-form estimate: ${calculation.tabletsPerDose} ${selectedSolidFormLabel}${calculation.tabletsPerDose === 1 ? "" : "s"}/dose (${calculation.tabletStrengthMg} mg each)`
+        : "Solid-form estimate: n/a",
       calculation.liquidMlPerDose != null
         ? `Liquid conversion: ${calculation.liquidMlPerDose} mL/dose (${calculation.liquidConcentrationMgPerMl} mg/mL)`
         : "Liquid conversion: n/a",
@@ -319,7 +333,8 @@ export default function DoseCalcCalculatorTab({ initialMedicationId = "" }) {
     selectedTabletStrength,
     selectedPillStrength,
     selectedCapsuleStrength,
-    selectedLiquidStrength
+    selectedLiquidStrength,
+    selectedSolidFormLabel
   ]);
 
   const downloadSummary = () => {
@@ -532,7 +547,7 @@ export default function DoseCalcCalculatorTab({ initialMedicationId = "" }) {
           <p><strong>Selected liquid strength:</strong> {selectedLiquidStrength?.label ?? "n/a"}</p>
 
           {calculation.tabletsPerDose != null && (
-            <p><strong>Tablet estimate:</strong> {calculation.tabletsPerDose} tablets/dose ({calculation.tabletStrengthMg} mg each)</p>
+            <p><strong>Solid-form estimate:</strong> {calculation.tabletsPerDose} {selectedSolidFormLabel}{calculation.tabletsPerDose === 1 ? "" : "s"}/dose ({calculation.tabletStrengthMg} mg each)</p>
           )}
 
           {calculation.liquidMlPerDose != null && (

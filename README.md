@@ -7,6 +7,7 @@ A React medication dosing assistant focused on age/weight calculations, dose fre
 ## Features
 
 - Medication selector with categories and medication icons.
+- Most Common Meds tab for urgent-care favorites and faster access.
 - Medication dropdown now displays all listed strengths for each medication.
 - Color-coded navigation tabs for faster visual scanning.
 - Mobile-first responsive layout tuned for smartphones and iPhones (safe-area spacing + touch-friendly controls).
@@ -25,6 +26,7 @@ A React medication dosing assistant focused on age/weight calculations, dose fre
 - **Form conversion**:
   - mg → tablets (by mg/tablet)
   - mg → mL (by mg/mL)
+  - calculator shows solid-form estimate and liquid equivalent when a matching concentration is available
   - source/target form selection (tablet, pill, liquid)
   - medication strength dropdown selection for conversion
   - show conversion button with warning alert to double-check inputs
@@ -87,6 +89,7 @@ $$
   - alert reminder: "double check input before submitting result"
 - **Categories**: browse all medications by category with strengths/forms.
   - each medication card is clickable and includes Calculate/Convert buttons
+- **Most Common Meds**: quick urgent-care medication list that loads the calculator and highlights dose plus tablet/liquid equivalents.
 - **By Age**: age-group-oriented workflow with dose output.
 - **By Weight**: mg/kg/day-focused workflow.
 - **Saved**: previously saved calculation snapshots.

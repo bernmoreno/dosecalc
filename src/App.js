@@ -17,6 +17,7 @@ import ByAgeTab from "./tabs/ByAgeTab";
 import ByWeightTab from "./tabs/ByWeightTab";
 import SettingsTab from "./tabs/SettingsTab";
 import MedicationCategoriesTab from "./tabs/MedicationCategoriesTab";
+import MostCommonMedsTab from "./tabs/MostCommonMedsTab";
 import "./App.css";
 
 function App() {
@@ -141,6 +142,12 @@ function App() {
         ><FaHistory /> Saved</button>
         <button
           type="button"
+          className={`tab-btn tab-common ${activeTab === "common" ? "is-active" : ""}`}
+          onClick={() => setActiveTab("common")}
+          aria-current={activeTab === "common" ? "page" : undefined}
+        ><FaPills /> Most Common</button>
+        <button
+          type="button"
           className={`tab-btn tab-categories ${activeTab === "categories" ? "is-active" : ""}`}
           onClick={() => setActiveTab("categories")}
           aria-current={activeTab === "categories" ? "page" : undefined}
@@ -169,6 +176,7 @@ function App() {
         {activeTab === "calculator" && <DoseCalcCalculatorTab initialMedicationId={calculatorMedicationId} />}
         {activeTab === "convert" && <ConvertTab initialMedicationId={convertMedicationId} />}
         {activeTab === "saved" && <SavedDataTab />}
+        {activeTab === "common" && <MostCommonMedsTab />}
         {activeTab === "categories" && (
           <MedicationCategoriesTab
             onConvertMedication={handleConvertMedication}
