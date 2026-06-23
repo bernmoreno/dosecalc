@@ -36,6 +36,9 @@ function buildMedicationPreview(medication) {
 export default function MainPageTab({ initialCalculatorMedicationId = "" }) {
   const [showAllCommonMeds, setShowAllCommonMeds] = useState(false);
   const [selectedExternalLinkId, setSelectedExternalLinkId] = useState(EXTERNAL_LINKS[0]?.id ?? "");
+  const [calculatorRefreshKey, setCalculatorRefreshKey] = useState(0);
+  const [externalFrameKey, setExternalFrameKey] = useState(0);
+  const [manualFrameKey, setManualFrameKey] = useState(0);
   const externalViewerRef = useRef(null);
 
   const medicationMap = useMemo(() => {
@@ -76,11 +79,36 @@ export default function MainPageTab({ initialCalculatorMedicationId = "" }) {
     ? commonMedications
     : commonMedications.slice(0, PREVIEW_MEDICATION_LIMIT);
 
+  const firstPediatricMedicationId = pediatricQuickGroups.find((group) => group.items.length > 0)?.items[0]?.medicationId ?? "";
+
   const selectedMedication = medicationMap[selectedMedicationId] ?? commonMedications[0] ?? null;
   const selectedExternalLink = EXTERNAL_LINKS.find((link) => link.id === selectedExternalLinkId) ?? EXTERNAL_LINKS[0] ?? null;
 
   const scrollToExternalViewer = () => {
     externalViewerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const refreshCommonSection = () => {
+    setShowAllCommonMeds(false);
+    setSelectedMedicationId(initialCalculatorMedicationId || MOST_COMMON_URGENT_CARE_MED_IDS[0] || commonMedications[0]?.id || "");
+  };
+
+  const refreshPediatricSection = () => {
+    if (firstPediatricMedicationId) {
+      setSelectedMedicationId(firstPediatricMedicationId);
+    }
+  };
+
+  const refreshCalculatorSection = () => {
+    setCalculatorRefreshKey((current) => current + 1);
+  };
+
+  const refreshExternalSection = () => {
+    setExternalFrameKey((current) => current + 1);
+  };
+
+  const refreshManualSection = () => {
+    setManualFrameKey((current) => current + 1);
   };
 
   return (
@@ -100,6 +128,14 @@ export default function MainPageTab({ initialCalculatorMedicationId = "" }) {
                   Quick-pick buttons from the medication information already in this app. Five show first; use <strong>More</strong> for the rest.
                 </p>
               </div>
+              <button
+                type="button"
+                className="secondary-btn section-refresh-btn"
+                onClick={refreshCommonSection}
+                aria-label="Refresh most common medicines section"
+              >
+                ↻ Refresh
+              </button>
             </div>
 
             <div className="medicine-button-grid" aria-label="Most common medicines">
@@ -135,6 +171,14 @@ export default function MainPageTab({ initialCalculatorMedicationId = "" }) {
                   Quick pediatric picks under the most common medicines area. Tap a medication to load it into the calculator and detail panel.
                 </p>
               </div>
+              <button
+                type="button"
+                className="secondary-btn section-refresh-btn"
+                onClick={refreshPediatricSection}
+                aria-label="Refresh pediatric medicine section"
+              >
+                ↻ Refresh
+              </button>
             </div>
 
             <div className="pediatric-quick-groups" aria-label="Pediatric medicine quick groups">
@@ -179,7 +223,18 @@ export default function MainPageTab({ initialCalculatorMedicationId = "" }) {
 
         <div className="dashboard-side-stack">
           <div className="floating-panel floating-panel-calculator full-calculator-panel panel-theme-calculator">
+            <div className="section-panel-tools">
+              <button
+                type="button"
+                className="secondary-btn section-refresh-btn"
+                onClick={refreshCalculatorSection}
+                aria-label="Refresh calculator section"
+              >
+                ↻ Refresh
+              </button>
+            </div>
             <DoseCalcCalculatorTab
+              key={`calculator-${calculatorRefreshKey}`}
               initialMedicationId={selectedMedication?.id || initialCalculatorMedicationId}
               heading="Calculator"
               description="Full calculator view with extra padding for quick dose, strength, and liquid-conversion review while you keep the app open."
@@ -195,6 +250,14 @@ export default function MainPageTab({ initialCalculatorMedicationId = "" }) {
                   Floating public reference viewer inside the page. Choose a public Epocrates page below, scroll it here, or open it in a separate tab when needed.
                 </p>
               </div>
+              <button
+                type="button"
+                className="secondary-btn section-refresh-btn external-action-btn"
+                onClick={refreshExternalSection}
+                aria-label="Refresh external link viewer"
+              >
+                ↻ Refresh
+              </button>
             </div>
 
             <div className="external-link-button-list" aria-label="External reference links">
@@ -237,6 +300,7 @@ export default function MainPageTab({ initialCalculatorMedicationId = "" }) {
                     <span className="external-scroll-cue-line" />
                   </div>
                   <iframe
+                    key={`${selectedExternalLink.id}-${externalFrameKey}`}
                     className="external-link-frame"
                     src={selectedExternalLink.url}
                     title={`${selectedExternalLink.label} viewer`}
@@ -263,18 +327,29 @@ export default function MainPageTab({ initialCalculatorMedicationId = "" }) {
               Full manual calculator view at the bottom of the page with a larger embedded frame so users can work in a fuller view with less scrolling.
             </p>
           </div>
-          <a
-            className="secondary-btn manual-calculator-link"
-            href={MANUAL_CALCULATOR_URL}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open full calculator
-          </a>
+          <div className="manual-calculator-actions">
+            <button
+              type="button"
+              className="secondary-btn section-refresh-btn"
+              onClick={refreshManualSection}
+              aria-label="Refresh manual calculator section"
+            >
+              ↻ Refresh
+            </button>
+            <a
+              className="secondary-btn manual-calculator-link"
+              href={MANUAL_CALCULATOR_URL}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open full calculator
+            </a>
+          </div>
         </div>
 
         <div className="manual-calculator-frame-wrap">
           <iframe
+            key={`manual-${manualFrameKey}`}
             className="manual-calculator-frame"
             src={MANUAL_CALCULATOR_URL}
             title="Manual calculator app"

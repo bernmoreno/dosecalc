@@ -17,6 +17,7 @@ A React medication dosing assistant focused on age/weight calculations, dose fre
 - Main page redesigned with compact medicine buttons, a full calculator on the right, and a floating in-page Epocrates external-reference viewer with dark controls.
 - Main page now includes a Pediatric Medicine quick section directly below Most Common Medicines, with section colors matched to their tab themes.
 - Main page calculator section now uses the same color family as the top Calculator tab for a more consistent visual workflow.
+- Main page sections now include **Refresh** buttons so users can quickly reset the common/pediatric picks and reload the embedded calculator or reference frames without refreshing the whole app.
 - Pediatric antibiotic workflow now shows diagnosis-specific dosing guidance in both the pediatric reference area and the calculator when supported.
 - Bottom manual calculator app restored, with a full embedded view and mobile-friendly floating behavior near the bottom of the main page.
 - Responsive layout tuned for small Android phones, iPhones, and mobile browsers with stacked panels, scrollable tabs, and touch-friendly controls.
