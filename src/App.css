@@ -373,6 +373,60 @@ textarea {
   color: #69205c;
 }
 
+.panel-theme-calculator {
+  background: linear-gradient(180deg, rgba(41, 187, 216, 0.18), rgba(15, 127, 149, 0.1)), #f2fcff;
+  border-color: rgba(12, 109, 128, 0.34);
+  box-shadow: 0 18px 32px rgba(15, 127, 149, 0.18);
+}
+
+.panel-theme-calculator h2,
+.panel-theme-calculator h3,
+.panel-theme-calculator h4,
+.panel-theme-calculator strong {
+  color: #0c6d80;
+}
+
+.panel-theme-calculator .muted,
+.panel-theme-calculator p,
+.panel-theme-calculator label,
+.panel-theme-calculator span,
+.panel-theme-calculator li,
+.panel-theme-calculator div {
+  color: #114d5c;
+}
+
+.panel-theme-calculator .card,
+.panel-theme-calculator .summary-panel,
+.panel-theme-calculator .diagnosis-field {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(232, 249, 252, 0.92));
+  border-color: rgba(12, 109, 128, 0.22);
+}
+
+.panel-theme-calculator .field select,
+.panel-theme-calculator .field input {
+  border-color: rgba(12, 109, 128, 0.28);
+  background: rgba(255, 255, 255, 0.96);
+  color: #0f4150;
+}
+
+.panel-theme-calculator .primary-btn {
+  background: linear-gradient(180deg, #22aac5, #0c6d80);
+}
+
+.panel-theme-calculator .primary-btn:hover {
+  background: linear-gradient(180deg, #1e9cb5, #095968);
+}
+
+.panel-theme-calculator .secondary-btn {
+  background: rgba(255, 255, 255, 0.92);
+  color: #0c6d80;
+  border-color: rgba(12, 109, 128, 0.28);
+}
+
+.panel-theme-calculator .secondary-btn:hover {
+  background: rgba(41, 187, 216, 0.14);
+}
+
 .compact-panel-header h2,
 .external-link-header h2 {
   margin-bottom: 0.35rem;

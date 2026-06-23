@@ -178,7 +178,7 @@ export default function MainPageTab({ initialCalculatorMedicationId = "" }) {
         </div>
 
         <div className="dashboard-side-stack">
-          <div className="floating-panel floating-panel-calculator full-calculator-panel">
+          <div className="floating-panel floating-panel-calculator full-calculator-panel panel-theme-calculator">
             <DoseCalcCalculatorTab
               initialMedicationId={selectedMedication?.id || initialCalculatorMedicationId}
               heading="Calculator"
