@@ -5,7 +5,6 @@ import {
   FaExchangeAlt,
   FaHistory,
   FaBaby,
-  FaWeight,
   FaCog,
   FaPills,
   FaThList,
@@ -14,8 +13,6 @@ import {
 import DoseCalcCalculatorTab from "./tabs/DoseCalcCalculatorTab";
 import ConvertTab from "./tabs/ConvertTab";
 import SavedDataTab from "./tabs/SavedDataTab";
-import ByAgeTab from "./tabs/ByAgeTab";
-import ByWeightTab from "./tabs/ByWeightTab";
 import SettingsTab from "./tabs/SettingsTab";
 import MedicationCategoriesTab from "./tabs/MedicationCategoriesTab";
 import MostCommonMedsTab from "./tabs/MostCommonMedsTab";
@@ -169,18 +166,6 @@ function App() {
         ><FaThList /> Categories</button>
         <button
           type="button"
-          className={`tab-btn tab-by-age ${activeTab === "byAge" ? "is-active" : ""}`}
-          onClick={() => setActiveTab("byAge")}
-          aria-current={activeTab === "byAge" ? "page" : undefined}
-        ><FaBaby /> By Age</button>
-        <button
-          type="button"
-          className={`tab-btn tab-by-weight ${activeTab === "byWeight" ? "is-active" : ""}`}
-          onClick={() => setActiveTab("byWeight")}
-          aria-current={activeTab === "byWeight" ? "page" : undefined}
-        ><FaWeight /> By Weight</button>
-        <button
-          type="button"
           className={`tab-btn tab-settings ${activeTab === "settings" ? "is-active" : ""}`}
           onClick={() => setActiveTab("settings")}
           aria-current={activeTab === "settings" ? "page" : undefined}
@@ -192,7 +177,7 @@ function App() {
         {activeTab === "calculator" && <DoseCalcCalculatorTab initialMedicationId={calculatorMedicationId} />}
         {activeTab === "convert" && <ConvertTab initialMedicationId={convertMedicationId} />}
         {activeTab === "saved" && <SavedDataTab />}
-        {activeTab === "common" && <MostCommonMedsTab />}
+        {activeTab === "common" && <MostCommonMedsTab onCalculateMedication={handleCalculateMedication} />}
         {activeTab === "pediatric" && <PediatricMedsTab />}
         {activeTab === "categories" && (
           <MedicationCategoriesTab
@@ -200,8 +185,6 @@ function App() {
             onCalculateMedication={handleCalculateMedication}
           />
         )}
-        {activeTab === "byAge" && <ByAgeTab />}
-        {activeTab === "byWeight" && <ByWeightTab />}
         {activeTab === "settings" && <SettingsTab />}
       </main>
 

@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import DoseCalcCalculatorTab from "./DoseCalcCalculatorTab";
 import { MEDICATION_CATEGORIES, MOST_COMMON_URGENT_CARE_MED_IDS } from "../data/medications";
 
 function buildCommonMedicationCategories() {
@@ -11,7 +10,7 @@ function buildCommonMedicationCategories() {
     .filter((category) => category.medications.length > 0);
 }
 
-export default function MostCommonMedsTab() {
+export default function MostCommonMedsTab({ onCalculateMedication }) {
   const [selectedMedicationId, setSelectedMedicationId] = useState(MOST_COMMON_URGENT_CARE_MED_IDS[0] ?? "");
 
   const commonCategories = useMemo(() => buildCommonMedicationCategories(), []);
@@ -26,12 +25,17 @@ export default function MostCommonMedsTab() {
     [commonCategories]
   );
 
+  const openMedicationInCalculator = (medicationId) => {
+    setSelectedMedicationId(medicationId);
+    onCalculateMedication?.(medicationId);
+  };
+
   return (
     <section>
       <h2>Most Common Meds</h2>
       <p className="muted">
-        Quick access to frequently used urgent care medications. Pick a common medication to load the calculator and review the dose,
-        solid-form estimate, and liquid equivalent when a liquid concentration is available.
+        Quick access to frequently used urgent care medications. Pick a common medication and the app will jump to the main calculator,
+        preselect that medicine, and show the dosage result using the calculator inputs.
       </p>
 
       <div className="most-common-grid">
@@ -41,11 +45,11 @@ export default function MostCommonMedsTab() {
             className={`med-card is-clickable ${selectedMedicationId === medication.id ? "is-selected" : ""}`}
             role="button"
             tabIndex={0}
-            onClick={() => setSelectedMedicationId(medication.id)}
+            onClick={() => openMedicationInCalculator(medication.id)}
             onKeyDown={(event) => {
               if (event.key === "Enter" || event.key === " ") {
                 event.preventDefault();
-                setSelectedMedicationId(medication.id);
+                openMedicationInCalculator(medication.id);
               }
             }}
           >
@@ -63,23 +67,14 @@ export default function MostCommonMedsTab() {
               className="primary-btn"
               onClick={(event) => {
                 event.stopPropagation();
-                setSelectedMedicationId(medication.id);
+                openMedicationInCalculator(medication.id);
               }}
             >
-              Use this medication
+              Open in calculator
             </button>
           </article>
         ))}
       </div>
-
-      <DoseCalcCalculatorTab
-        key={selectedMedicationId || "most-common-meds-calculator"}
-        initialMedicationId={selectedMedicationId}
-        medicationCategories={commonCategories}
-        heading="Common Meds Dose + Conversion"
-        description="Calculate a typical dose using age and weight, then review the solid-form estimate and liquid equivalent when both forms are available."
-        medicationLabel="Most common medication"
-      />
     </section>
   );
 }

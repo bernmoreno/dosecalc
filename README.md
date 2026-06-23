@@ -8,7 +8,7 @@ A React medication dosing assistant focused on age/weight calculations, dose fre
 
 - Medication selector with categories and medication icons.
 - Medication selector now places **all Most Common Medication** options first and **all Pediatric Medication** options second before the rest of the catalog.
-- Most Common Meds tab for urgent-care favorites and faster access.
+- Most Common Meds tab for urgent-care favorites and faster access into the Calculator.
 - Pediatric Meds tab with grouped pediatric urgent-care medication lists and high-yield dosing references.
 - Medication dropdown now displays all listed strengths for each medication.
 - Folder-style, darker high-contrast navigation tabs using the Adobe palette for faster visual scanning.
@@ -45,6 +45,7 @@ A React medication dosing assistant focused on age/weight calculations, dose fre
 - Clickable medication cards in Categories with quick actions:
   - **Calculate dosage now** (opens Calculator with selected medication)
   - **Convert medicine** (opens Convert with selected medication)
+- Clicking a medication in **Most Common Meds** now opens the main **Calculator** tab with that medicine preselected and the dose result shown using the calculator inputs.
 - Save calculated results to local storage and review in Saved tab.
 - Save entries with patient full name, edit patient names later, and delete individual/all saved entries.
 
@@ -123,10 +124,8 @@ $$
   - alert reminder: "double check input before submitting result"
 - **Categories**: browse all medications by category with strengths/forms.
   - each medication card is clickable and includes Calculate/Convert buttons
-- **Most Common Meds**: quick urgent-care medication list that loads the calculator and highlights dose plus tablet/liquid equivalents.
+- **Most Common Meds**: quick urgent-care medication list that sends the selected medicine into the main Calculator tab for dosing and conversion review.
 - **Pediatric Meds**: grouped pediatric urgent-care lists for antibiotics, respiratory, allergy/rash, eye/ear, and skin medications, plus a focused pediatric dosing calculator for high-yield meds.
-- **By Age**: age-group-oriented workflow with dose output.
-- **By Weight**: mg/kg/day-focused workflow.
 - **Saved**: previously saved calculation snapshots.
   - includes patient full name editing and delete controls
 
@@ -176,7 +175,7 @@ Note: service worker caching is enabled in production only. During local develop
 2. Add tab-based UI shell in `App.js`.
 3. Add medication catalog (`src/data/medications.js`) grouped by category.
 4. Build reusable dosing functions in `src/utils/dosing.js`.
-5. Implement Calculator / Convert / By Age / By Weight tabs.
+5. Implement Calculator and Convert tabs plus medication workflow screens.
 6. Add conversion support for tablets and liquid concentration.
 7. Add local storage persistence for saved results.
 8. Add category browser tab with icons per category and medication.

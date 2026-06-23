@@ -189,6 +189,7 @@ export default function DoseCalcCalculatorTab({
     }
     if (exists) {
       setSelectedMedicationId(initialMedicationId);
+      setShowResult(true);
     }
   }, [initialMedicationId, medicationCategories]);
 
