@@ -2,8 +2,8 @@ name: Auto deploy dosecalc to GitHub Pages
 
 on:
   push:
-    # Deploy every change pushed to the primary branches.
-    branches: ["main", "master"]
+    # Deploy every change pushed to the protected Pages branch.
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:

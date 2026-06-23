@@ -106,7 +106,7 @@ $$
 ## Deployment
 
 - GitHub Pages deployment is handled by GitHub Actions.
-- Every push to `main` or `master` automatically builds and deploys the latest app to GitHub Pages.
+- Every push to `main` automatically builds and deploys the latest app to GitHub Pages.
 - The repo now uses a single React app deployment workflow for Pages.
 - Local changes are published to the GitHub Pages site after they are committed and pushed to the repository.
 - The app now unregisters service workers on load so GitHub Pages updates, including CSS styling changes, refresh more reliably.
@@ -205,8 +205,6 @@ Replace `<YOUR_USERNAME>` and `<YOUR_REPO>`.
 
 This repo includes `.github/workflows/deploy-pages.yml` to auto-deploy on pushes to `main`.
 
-It also supports repositories that still use `master`.
-
 ### One-time GitHub setup
 
 1. Go to **Repository → Settings → Pages**.
@@ -218,7 +216,7 @@ It also supports repositories that still use `master`.
 
 ### Deployment checklist (public availability)
 
-1. Ensure your default branch is `main` or `master`.
+1. Ensure your default branch is `main`.
 2. Push all files, including `.github/workflows/deploy-pages.yml`.
 3. Confirm Pages source is set to **GitHub Actions**.
 4. Wait for workflow `Deploy dosecalc to GitHub Pages` to finish successfully.
