@@ -110,6 +110,7 @@ $$
 
 - GitHub Pages deployment is handled by GitHub Actions.
 - Every push to `main` automatically builds and deploys the latest app to GitHub Pages.
+- VS Code workspace settings now enable **Auto Save** after a short delay so local edits are saved automatically while you work.
 - The repo now uses a single React app deployment workflow for Pages.
 - Local changes are published to the GitHub Pages site after they are committed and pushed to the repository.
 - The app now unregisters service workers on load so GitHub Pages updates, including CSS styling changes, refresh more reliably.
@@ -158,6 +159,13 @@ npm start
 ```
 
 Open: `http://localhost:3000`
+
+### VS Code auto-save
+
+- Workspace auto-save is enabled in `.vscode/settings.json`
+- Save mode: `afterDelay`
+- Delay: `1000ms`
+- This saves local file edits automatically in VS Code, but GitHub Pages still updates only after changes are **committed and pushed to `main`**
 
 ### Build
 
