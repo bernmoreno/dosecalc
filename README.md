@@ -46,6 +46,7 @@ A React medication dosing assistant focused on age/weight calculations, dose fre
   - **Calculate dosage now** (opens Calculator with selected medication)
   - **Convert medicine** (opens Convert with selected medication)
 - Clicking a medication in **Most Common Meds** now opens the main **Calculator** tab with that medicine preselected and the dose result shown using the calculator inputs.
+- Clicking **Use in pediatric calculator** now opens the main **Calculator** tab with that pediatric medication preselected.
 - Save calculated results to local storage and review in Saved tab.
 - Save entries with patient full name, edit patient names later, and delete individual/all saved entries.
 

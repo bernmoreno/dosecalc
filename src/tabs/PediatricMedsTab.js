@@ -19,7 +19,8 @@ function buildPediatricCalculatorCategories() {
 export default function PediatricMedsTab({
   heading = "Pediatric Meds",
   description = "Pediatric urgent care quick list focused on the medications most commonly prescribed for otitis media, strep, sinusitis, wheezing, croup, common rashes, and minor eye/ear infections.",
-  showCalculator = true
+  showCalculator = true,
+  onCalculateMedication
 }) {
   const [selectedMedicationId, setSelectedMedicationId] = useState(PEDIATRIC_DOSING_PRIORITY_IDS[0] ?? "");
 
@@ -35,6 +36,11 @@ export default function PediatricMedsTab({
 
     return Object.fromEntries(flattened.map((medication) => [medication.id, medication]));
   }, []);
+
+  const openMedicationInCalculator = (medicationId) => {
+    setSelectedMedicationId(medicationId);
+    onCalculateMedication?.(medicationId);
+  };
 
   return (
     <section>
@@ -108,7 +114,7 @@ export default function PediatricMedsTab({
                       <button
                         type="button"
                         className="primary-btn"
-                        onClick={() => setSelectedMedicationId(item.medicationId)}
+                        onClick={() => openMedicationInCalculator(item.medicationId)}
                       >
                         Use in pediatric calculator
                       </button>

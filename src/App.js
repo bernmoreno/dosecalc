@@ -178,7 +178,7 @@ function App() {
         {activeTab === "convert" && <ConvertTab initialMedicationId={convertMedicationId} />}
         {activeTab === "saved" && <SavedDataTab />}
         {activeTab === "common" && <MostCommonMedsTab onCalculateMedication={handleCalculateMedication} />}
-        {activeTab === "pediatric" && <PediatricMedsTab />}
+        {activeTab === "pediatric" && <PediatricMedsTab onCalculateMedication={handleCalculateMedication} />}
         {activeTab === "categories" && (
           <MedicationCategoriesTab
             onConvertMedication={handleConvertMedication}
