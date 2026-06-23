@@ -70,6 +70,7 @@ textarea {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
+  flex-wrap: wrap;
 }
 
 .install-btn {
@@ -816,6 +817,7 @@ textarea {
   padding: 0.6rem 0.95rem;
   cursor: pointer;
   font-weight: 600;
+  white-space: normal;
 }
 
 .primary-btn:hover {
@@ -831,6 +833,7 @@ textarea {
   padding: 0.58rem 0.9rem;
   cursor: pointer;
   font-weight: 600;
+  white-space: normal;
 }
 
 .secondary-btn:hover {
@@ -1186,10 +1189,35 @@ textarea {
     border-radius: 0 16px 16px 16px;
   }
 
+  .app-tabs {
+    padding: 0.75rem 0.7rem 0;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    scroll-snap-type: x proximity;
+  }
+
   .tab-btn {
-    flex: 1 1 calc(33.333% - 0.55rem);
+    flex: 0 0 auto;
     justify-content: center;
-    min-height: 44px;
+    min-height: 46px;
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 820px) {
+  .form-grid,
+  .med-grid,
+  .most-common-grid,
+  .pediatric-med-list,
+  .rule-grid,
+  .medicine-button-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-left-stack,
+  .dashboard-side-stack,
+  .pediatric-sections {
+    gap: 0.95rem;
   }
 }
 
@@ -1239,10 +1267,7 @@ textarea {
     position: sticky;
     top: 0;
     z-index: 10;
-    padding: 0.75rem 0.55rem 0;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    scroll-snap-type: x proximity;
+    padding: 0.68rem 0.5rem 0;
   }
 
   .tab-btn {
@@ -1274,6 +1299,11 @@ textarea {
     font-size: 16px;
   }
 
+  .privacy-toggle {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
   .button-row {
     flex-direction: column;
   }
@@ -1301,8 +1331,8 @@ textarea {
   }
 
   .external-link-frame {
-    min-height: 420px;
-    height: 58dvh;
+    min-height: 360px;
+    height: 52dvh;
   }
 
   .external-scroll-cue {
@@ -1316,13 +1346,13 @@ textarea {
   }
 
   .manual-calculator-frame-wrap {
-    min-height: calc(100dvh - 10.5rem);
-    height: calc(100dvh - 10.5rem);
+    min-height: calc(100dvh - 11rem);
+    height: calc(100dvh - 11rem);
     border-radius: 16px;
   }
 
   .manual-calculator-frame {
-    min-height: calc(100dvh - 10.5rem);
+    min-height: calc(100dvh - 11rem);
   }
 }
 
@@ -1337,6 +1367,11 @@ textarea {
   .tab-btn {
     font-size: 0.88rem;
     padding: 0.6rem 0.72rem 0.78rem;
+  }
+
+  .app-subtitle {
+    font-size: 0.98rem;
+    line-height: 1.45;
   }
 
   .card,
@@ -1357,13 +1392,58 @@ textarea {
     min-height: 220px;
   }
 
+  .external-link-viewer-wrap {
+    padding: 0.7rem;
+  }
+
+  .external-link-frame {
+    min-height: 320px;
+    height: 46dvh;
+  }
+
+  .medicine-quick-btn,
+  .pediatric-quick-btn,
+  .external-link-card {
+    padding: 0.75rem 0.8rem;
+  }
+
   .manual-calculator-frame-wrap {
-    min-height: calc(100dvh - 10rem);
-    height: calc(100dvh - 10rem);
+    min-height: calc(100dvh - 11.5rem);
+    height: calc(100dvh - 11.5rem);
   }
 
   .manual-calculator-frame {
-    min-height: calc(100dvh - 10rem);
+    min-height: calc(100dvh - 11.5rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .app-header,
+  .app-content,
+  .app-footer {
+    padding-left: 0.55rem;
+    padding-right: 0.55rem;
+  }
+
+  .tab-btn {
+    font-size: 0.82rem;
+    padding: 0.55rem 0.62rem 0.74rem;
+    min-height: 46px;
+  }
+
+  .app-header h1 {
+    font-size: 1.36rem;
+  }
+
+  .floating-panel,
+  .manual-calculator-panel {
+    padding-left: 0.58rem;
+    padding-right: 0.58rem;
+  }
+
+  .external-link-frame {
+    min-height: 280px;
+    height: 42dvh;
   }
 }
 

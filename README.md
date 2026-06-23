@@ -22,6 +22,7 @@ A React medication dosing assistant focused on age/weight calculations, dose fre
 - Bottom manual calculator app restored, with a full embedded view and mobile-friendly floating behavior near the bottom of the main page.
 - Responsive layout tuned for small Android phones, iPhones, and mobile browsers with stacked panels, scrollable tabs, and touch-friendly controls.
 - Mobile-first responsive layout tuned for smartphones and iPhones (safe-area spacing + touch-friendly controls).
+- Phone-size breakpoints now collapse grids earlier, keep tabs horizontally scrollable on smaller widths, and reduce iframe/card heights for tighter mobile screens.
 - **Weight-based dose math**:
   - convert lb → kg
   - calculate daily dose from mg/kg/day
