@@ -7,6 +7,7 @@ A React medication dosing assistant focused on age/weight calculations, dose fre
 ## Features
 
 - Medication selector with categories and medication icons.
+- Medication selector now places **all Most Common Medication** options first and **all Pediatric Medication** options second before the rest of the catalog.
 - Most Common Meds tab for urgent-care favorites and faster access.
 - Pediatric Meds tab with grouped pediatric urgent-care medication lists and high-yield dosing references.
 - Medication dropdown now displays all listed strengths for each medication.
