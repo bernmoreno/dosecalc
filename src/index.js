@@ -18,18 +18,10 @@ reportWebVitals();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    if (process.env.NODE_ENV === "production") {
-      const swUrl = `${process.env.PUBLIC_URL}/sw.js`;
-      navigator.serviceWorker.register(swUrl).catch(() => {
-        // service worker registration is optional
-      });
-      return;
-    }
-
     navigator.serviceWorker.getRegistrations().then((registrations) => {
       registrations.forEach((registration) => registration.unregister());
     }).catch(() => {
-      // ignore cleanup errors in development
+      // ignore cleanup errors
     });
   });
 }

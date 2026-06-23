@@ -109,6 +109,7 @@ $$
 - Every push to `main` or `master` automatically builds and deploys the latest app to GitHub Pages.
 - The repo now uses a single React app deployment workflow for Pages.
 - Local changes are published to the GitHub Pages site after they are committed and pushed to the repository.
+- The app now unregisters service workers on load so GitHub Pages updates, including CSS styling changes, refresh more reliably.
   - medication dropdown includes all listed strengths for quick review
   - includes an "All available medication strengths" dropdown
   - shows separated strength dropdowns by form: tablet, pill, capsule, and liquid
