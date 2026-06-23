@@ -1,7 +1,8 @@
-name: Deploy dosecalc to GitHub Pages
+name: Auto deploy dosecalc to GitHub Pages
 
 on:
   push:
+    # Deploy every change pushed to the primary branches.
     branches: ["main", "master"]
   workflow_dispatch:
 
@@ -20,6 +21,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - name: Setup Node
         uses: actions/setup-node@v4

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { MEDICATION_CATEGORIES } from "../data/medications";
-import { convertDoseToForms, getDosingProfile } from "../utils/dosing";
+import { calculateRecommendedDose, convertDoseToForms, getDiagnosisGuidance, getDosingProfile, lbToKg } from "../utils/dosing";
 
 function parseSolidStrengthOption(strength, formType, medicationForms = []) {
   const formsLower = medicationForms.map((form) => String(form).toLowerCase());
@@ -59,6 +59,9 @@ export default function ConvertTab({ initialMedicationId = "" }) {
 
   const [medicationId, setMedicationId] = useState(allMedications[0]?.id ?? "");
   const [totalDailyDoseMg, setTotalDailyDoseMg] = useState(500);
+  const [ageYears, setAgeYears] = useState(8);
+  const [weightValue, setWeightValue] = useState(25);
+  const [weightUnit, setWeightUnit] = useState("kg");
   const [frequencyPerDay, setFrequencyPerDay] = useState(2);
   const [tabletStrengthMg, setTabletStrengthMg] = useState(500);
   const [liquidConcentrationMgPerMl, setLiquidConcentrationMgPerMl] = useState(40);
@@ -71,15 +74,41 @@ export default function ConvertTab({ initialMedicationId = "" }) {
   const [selectedCapsuleStrengthKey, setSelectedCapsuleStrengthKey] = useState("");
   const [selectedLiquidStrengthKey, setSelectedLiquidStrengthKey] = useState("");
   const [selectedAnyStrengthKey, setSelectedAnyStrengthKey] = useState("");
+  const [selectedDiagnosisId, setSelectedDiagnosisId] = useState("");
   const [showConversion, setShowConversion] = useState(false);
 
   const selectedMedication = allMedications.find((medication) => medication.id === medicationId) ?? null;
+
+  const diagnosisGuidanceOptions = useMemo(
+    () => (selectedMedication ? getDiagnosisGuidance(selectedMedication.id) : []),
+    [selectedMedication]
+  );
+
+  const selectedDiagnosisGuidance = useMemo(
+    () => diagnosisGuidanceOptions.find((option) => option.id === selectedDiagnosisId) ?? null,
+    [diagnosisGuidanceOptions, selectedDiagnosisId]
+  );
+
+  const weightKg = useMemo(() => {
+    if (!Number.isFinite(weightValue) || weightValue <= 0) return NaN;
+    return weightUnit === "lb" ? lbToKg(weightValue) : weightValue;
+  }, [weightUnit, weightValue]);
 
   useEffect(() => {
     if (!initialMedicationId) return;
     const exists = allMedications.some((medication) => medication.id === initialMedicationId);
     if (exists) setMedicationId(initialMedicationId);
   }, [initialMedicationId, allMedications]);
+
+  useEffect(() => {
+    if (diagnosisGuidanceOptions.length > 0) {
+      if (!diagnosisGuidanceOptions.some((option) => option.id === selectedDiagnosisId)) {
+        setSelectedDiagnosisId(diagnosisGuidanceOptions[0].id);
+      }
+    } else if (selectedDiagnosisId) {
+      setSelectedDiagnosisId("");
+    }
+  }, [diagnosisGuidanceOptions, selectedDiagnosisId]);
 
   const defaults = useMemo(() => {
     if (!selectedMedication) return null;
@@ -224,6 +253,19 @@ export default function ConvertTab({ initialMedicationId = "" }) {
     [totalDailyDoseMg, frequencyPerDay, tabletStrengthMg, liquidConcentrationMgPerMl]
   );
 
+  const recommendedConversion = useMemo(
+    () => calculateRecommendedDose({
+      medication: selectedMedication,
+      weightKg,
+      ageYears,
+      frequencyPerDay,
+      diagnosisId: selectedDiagnosisId,
+      tabletStrengthMgOverride: selectedSolidStrength?.mg,
+      liquidConcentrationMgPerMlOverride: selectedLiquidStrength?.mgPerMl
+    }),
+    [selectedMedication, weightKg, ageYears, frequencyPerDay, selectedDiagnosisId, selectedSolidStrength, selectedLiquidStrength]
+  );
+
   const directConversion = useMemo(() => {
     const safeFrequency = Number.isFinite(frequencyPerDay) && frequencyPerDay > 0 ? frequencyPerDay : 1;
     const tabletStrength = Number.isFinite(tabletStrengthMg) && tabletStrengthMg > 0 ? tabletStrengthMg : null;
@@ -296,6 +338,13 @@ export default function ConvertTab({ initialMedicationId = "" }) {
     if (defaults.defaultLiquidMgPerMl) setLiquidConcentrationMgPerMl(defaults.defaultLiquidMgPerMl);
   };
 
+  const applyRecommendedDose = () => {
+    if (!recommendedConversion.ok) return;
+    setTotalDailyDoseMg(recommendedConversion.totalDailyDoseMg);
+    setFrequencyPerDay(recommendedConversion.frequencyPerDay);
+    setShowConversion(true);
+  };
+
   const handleShowConversion = () => {
     alert("double check input before submitting result");
     setShowConversion(true);
@@ -314,6 +363,10 @@ export default function ConvertTab({ initialMedicationId = "" }) {
     frequencyPerDay,
     tabletStrengthMg,
     liquidConcentrationMgPerMl,
+    ageYears,
+    weightValue,
+    weightUnit,
+    selectedDiagnosisId,
     sourceForm,
     targetForm,
     tabletCountPerDoseInput,
@@ -338,6 +391,36 @@ export default function ConvertTab({ initialMedicationId = "" }) {
         </label>
 
         <label className="field">
+          <span>Age (years)</span>
+          <input type="number" min="0" step="0.1" value={ageYears} onChange={(e) => setAgeYears(Number(e.target.value))} />
+        </label>
+
+        <label className="field">
+          <span>Weight</span>
+          <input type="number" min="0" step="0.1" value={weightValue} onChange={(e) => setWeightValue(Number(e.target.value))} />
+        </label>
+
+        <label className="field">
+          <span>Weight unit</span>
+          <select value={weightUnit} onChange={(e) => setWeightUnit(e.target.value)}>
+            <option value="kg">kg</option>
+            <option value="lb">lb</option>
+          </select>
+        </label>
+
+        {diagnosisGuidanceOptions.length > 0 && (
+          <label className="field">
+            <span>Diagnosis / use</span>
+            <select value={selectedDiagnosisId} onChange={(e) => setSelectedDiagnosisId(e.target.value)}>
+              {diagnosisGuidanceOptions.map((option) => (
+                <option key={option.id} value={option.id}>{option.diagnosis}</option>
+              ))}
+            </select>
+            {selectedDiagnosisGuidance?.purpose && <small className="muted">{selectedDiagnosisGuidance.purpose}</small>}
+          </label>
+        )}
+
+        <label className="field">
           <span>Total daily dose (mg/day)</span>
           <input type="number" min="0" step="0.1" value={totalDailyDoseMg} onChange={(e) => setTotalDailyDoseMg(Number(e.target.value))} />
         </label>
@@ -360,7 +443,33 @@ export default function ConvertTab({ initialMedicationId = "" }) {
 
       <div className="button-row">
         <button type="button" className="primary-btn" onClick={applyDefaults}>Use medication defaults</button>
+        <button type="button" className="secondary-btn" onClick={applyRecommendedDose} disabled={!recommendedConversion.ok}>Use recommended dose</button>
         <button type="button" className="secondary-btn" onClick={handleShowConversion}>Show conversion</button>
+      </div>
+
+      <div className="card">
+        <h3>Recommended dose-based conversion</h3>
+        {recommendedConversion.ok ? (
+          <div className="result-stack">
+            <p><strong>Used for:</strong> {recommendedConversion.selectedDiagnosisGuidance?.purpose ?? selectedMedication?.commonUse ?? "Selected medication"}</p>
+            {recommendedConversion.selectedDiagnosisGuidance?.diagnosis && <p><strong>Diagnosis:</strong> {recommendedConversion.selectedDiagnosisGuidance.diagnosis}</p>}
+            <p><strong>Recommended total daily dose:</strong> {recommendedConversion.totalDailyDoseMg} mg/day</p>
+            <p><strong>Recommended per dose:</strong> {recommendedConversion.dosePerAdministrationMg} mg/dose</p>
+            <p><strong>Correct frequency:</strong> {recommendedConversion.frequencyPerDay} doses/day</p>
+            {recommendedConversion.tabletsPerDose != null && (
+              <p><strong>Tablet / solid estimate:</strong> {recommendedConversion.tabletsPerDose} {selectedSolidStrength ? `${sourceForm === "liquid" ? "solid unit" : sourceForm}(s)` : "solid unit(s)"}/dose</p>
+            )}
+            {recommendedConversion.liquidMlPerDose != null && (
+              <p><strong>Liquid equivalent:</strong> {recommendedConversion.liquidMlPerDose} mL/dose</p>
+            )}
+            {recommendedConversion.selectedDiagnosisGuidance?.referenceRange && (
+              <p><strong>Diagnosis dose reference:</strong> {recommendedConversion.selectedDiagnosisGuidance.referenceRange}</p>
+            )}
+            {recommendedConversion.selectedDiagnosisGuidance?.note && <p className="muted">{recommendedConversion.selectedDiagnosisGuidance.note}</p>}
+          </div>
+        ) : (
+          <p className="muted">Enter medication, age, and weight to show the recommended medication conversion for the correct dose.</p>
+        )}
       </div>
 
       {showConversion ? (
@@ -382,8 +491,8 @@ export default function ConvertTab({ initialMedicationId = "" }) {
       )}
 
       <div className="card">
-        <h3>Tablet ⇄ Liquid Converter (Per Dose)</h3>
-        <p className="muted">Choose source form and target form. Convert tablet/pill to liquid or liquid back to tablet/pill.</p>
+        <h3>Tablet / Pill / Capsule ⇄ Liquid Converter (Per Dose)</h3>
+        <p className="muted">Choose source form and target form. Convert tablet to liquid, pill to liquid, capsule to liquid, or reverse the conversion using the selected medication strengths.</p>
 
         <div className="form-grid">
           <label className="field">
@@ -474,7 +583,7 @@ export default function ConvertTab({ initialMedicationId = "" }) {
 
           {sourceForm === "tablet" || sourceForm === "pill" || sourceForm === "capsule" ? (
             <label className="field">
-              <span>Tablets/Pills/Capsules per dose</span>
+              <span>{sourceForm.charAt(0).toUpperCase() + sourceForm.slice(1)}s per dose</span>
               <input
                 type="number"
                 min="0"
@@ -499,6 +608,7 @@ export default function ConvertTab({ initialMedicationId = "" }) {
 
         {showConversion && directConversion.ok ? (
           <div className="result-stack">
+            <p><strong>Medication:</strong> {selectedMedication?.generic}</p>
             <p><strong>Equivalent mg per dose:</strong> {directConversion.mgPerDose.toFixed(2)} mg</p>
             <p>
               <strong>Source dose:</strong> {directConversion.sourceUnitsPerDose.toFixed(2)} {directConversion.sourceForm === "liquid" ? "mL" : `${directConversion.sourceForm}(s)`} per dose
@@ -506,6 +616,9 @@ export default function ConvertTab({ initialMedicationId = "" }) {
             <p>
               <strong>Converted dose:</strong> {directConversion.convertedPerDose.toFixed(2)} {directConversion.targetForm === "liquid" ? "mL" : `${directConversion.targetForm}(s)`} per dose
             </p>
+            {directConversion.targetForm === "liquid" && (
+              <p><strong>Correct liquid conversion:</strong> {directConversion.convertedPerDose.toFixed(2)} mL per dose based on the selected medication strength and dosage.</p>
+            )}
             <p><strong>Daily totals ({directConversion.frequency} doses/day):</strong></p>
             <ul>
               <li>{directConversion.mgPerDay.toFixed(2)} mg/day</li>

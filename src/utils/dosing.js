@@ -10,6 +10,7 @@ export const DOSING_PROFILES = {
   vancomycin: { pediatricMgPerKgPerDay: 60, maxDailyMg: 4000, adultMgPerDay: 3000, defaultFrequencyPerDay: 3, liquidMgPerMl: 25 },
   azithromycin: { pediatricMgPerKgPerDay: 10, maxDailyMg: 500, adultMgPerDay: 500, defaultFrequencyPerDay: 1, tabletMg: 500, liquidMgPerMl: 40 },
   doxycycline: { pediatricMgPerKgPerDay: 4.4, maxDailyMg: 200, adultMgPerDay: 200, defaultFrequencyPerDay: 2, tabletMg: 100, liquidMgPerMl: 5 },
+  cefdinir: { pediatricMgPerKgPerDay: 14, maxDailyMg: 600, adultMgPerDay: 600, defaultFrequencyPerDay: 2, tabletMg: 300, liquidMgPerMl: 25 },
   levofloxacin: { pediatricMgPerKgPerDay: 10, maxDailyMg: 750, adultMgPerDay: 500, defaultFrequencyPerDay: 1, tabletMg: 500 },
   metronidazole: { pediatricMgPerKgPerDay: 30, maxDailyMg: 2000, adultMgPerDay: 1500, defaultFrequencyPerDay: 3, tabletMg: 500, liquidMgPerMl: 50 },
   clindamycin: { pediatricMgPerKgPerDay: 25, maxDailyMg: 2700, adultMgPerDay: 1800, defaultFrequencyPerDay: 3, tabletMg: 300, liquidMgPerMl: 15 },
@@ -26,6 +27,7 @@ export const DOSING_PROFILES = {
   metoprolol: { adultMgPerDay: 100, defaultFrequencyPerDay: 2, tabletMg: 50 },
   labetalol: { adultMgPerDay: 400, defaultFrequencyPerDay: 2, tabletMg: 200 },
   prednisone: { pediatricMgPerKgPerDay: 1, maxDailyMg: 60, adultMgPerDay: 40, defaultFrequencyPerDay: 1, tabletMg: 20, liquidMgPerMl: 1 },
+  prednisolone: { pediatricMgPerKgPerDay: 1, maxDailyMg: 60, adultMgPerDay: 40, defaultFrequencyPerDay: 2, tabletMg: 5, liquidMgPerMl: 3 },
   dexamethasone: { pediatricMgPerKgPerDay: 0.6, maxDailyMg: 10, adultMgPerDay: 8, defaultFrequencyPerDay: 1, tabletMg: 4, liquidMgPerMl: 1 },
   pantoprazole: { adultMgPerDay: 40, defaultFrequencyPerDay: 1, tabletMg: 40 },
   famotidine: { adultMgPerDay: 40, defaultFrequencyPerDay: 2, tabletMg: 20 },
@@ -41,9 +43,260 @@ export const DOSING_PROFILES = {
   metformin: { adultMgPerDay: 2000, defaultFrequencyPerDay: 2, tabletMg: 500, liquidMgPerMl: 100 },
   diphenhydramine: { pediatricMgPerKgPerDay: 5, maxDailyMg: 300, adultMgPerDay: 100, defaultFrequencyPerDay: 4, tabletMg: 25, liquidMgPerMl: 2.5 },
   cetirizine: { pediatricMgPerKgPerDay: 0.25, maxDailyMg: 10, adultMgPerDay: 10, defaultFrequencyPerDay: 1, tabletMg: 10, liquidMgPerMl: 1 },
+  loratadine: { pediatricMgPerKgPerDay: 0.2, maxDailyMg: 10, adultMgPerDay: 10, defaultFrequencyPerDay: 1, tabletMg: 10, liquidMgPerMl: 1 },
+  hydroxyzine: { pediatricMgPerKgPerDay: 2, maxDailyMg: 100, adultMgPerDay: 50, defaultFrequencyPerDay: 4, tabletMg: 10, liquidMgPerMl: 2 },
   benzonatate: { adultMgPerDay: 600, defaultFrequencyPerDay: 3, tabletMg: 200 },
   senna: { adultMgPerDay: 17.2, defaultFrequencyPerDay: 1, tabletMg: 8.6, liquidMgPerMl: 1.76 },
   docusate: { adultMgPerDay: 200, defaultFrequencyPerDay: 2, tabletMg: 100, liquidMgPerMl: 10 }
+};
+
+export const PEDIATRIC_DIAGNOSIS_GUIDANCE = {
+  amoxicillin: [
+    {
+      id: "acute-otitis-media",
+      diagnosis: "Acute otitis media",
+      purpose: "First-line antibiotic for uncomplicated ear infection coverage.",
+      pediatricMgPerKgPerDay: 90,
+      maxDailyMg: 4000,
+      frequencyPerDay: 2,
+      referenceRange: "80–90 mg/kg/day divided twice daily",
+      note: "High-dose amoxicillin is commonly used when pneumococcal coverage is desired."
+    },
+    {
+      id: "strep-pharyngitis",
+      diagnosis: "Strep pharyngitis",
+      purpose: "Group A streptococcal pharyngitis treatment.",
+      pediatricMgPerKgPerDay: 50,
+      maxDailyMg: 1000,
+      frequencyPerDay: 2,
+      referenceRange: "50 mg/kg/day divided once or twice daily",
+      note: "Common pediatric max is 1,000 mg/day."
+    },
+    {
+      id: "sinusitis",
+      diagnosis: "Sinusitis",
+      purpose: "Outpatient bacterial sinusitis coverage.",
+      pediatricMgPerKgPerDay: 45,
+      maxDailyMg: 4000,
+      frequencyPerDay: 2,
+      referenceRange: "45 mg/kg/day divided twice daily",
+      note: "Higher-dose regimens may be used in resistant-risk situations per local guidance."
+    }
+  ],
+  "amoxicillin-clavulanate": [
+    {
+      id: "otitis-media",
+      diagnosis: "Otitis media",
+      purpose: "Useful when beta-lactamase coverage is needed.",
+      pediatricMgPerKgPerDay: 90,
+      maxDailyMg: 4000,
+      frequencyPerDay: 2,
+      referenceRange: "90 mg/kg/day of the amoxicillin component divided twice daily",
+      note: "Dose refers to the amoxicillin component."
+    },
+    {
+      id: "sinusitis",
+      diagnosis: "Sinusitis",
+      purpose: "Bacterial sinusitis with broader coverage needs.",
+      pediatricMgPerKgPerDay: 45,
+      maxDailyMg: 4000,
+      frequencyPerDay: 2,
+      referenceRange: "45 mg/kg/day of the amoxicillin component divided twice daily",
+      note: "Dose refers to the amoxicillin component."
+    },
+    {
+      id: "animal-human-bite-wounds",
+      diagnosis: "Animal/human bite wounds",
+      purpose: "Bite wound coverage for polymicrobial oral flora.",
+      pediatricMgPerKgPerDay: 45,
+      maxDailyMg: 4000,
+      frequencyPerDay: 2,
+      referenceRange: "45 mg/kg/day of the amoxicillin component divided twice daily",
+      note: "Dose refers to the amoxicillin component."
+    }
+  ],
+  cephalexin: [
+    {
+      id: "cellulitis",
+      diagnosis: "Cellulitis",
+      purpose: "Skin and soft-tissue infection coverage.",
+      pediatricMgPerKgPerDay: 50,
+      maxDailyMg: 4000,
+      frequencyPerDay: 4,
+      referenceRange: "40–50 mg/kg/day divided 3 to 4 times daily",
+      note: "Use clinical severity and local resistance patterns to guide escalation."
+    },
+    {
+      id: "impetigo",
+      diagnosis: "Impetigo",
+      purpose: "Common outpatient antistaphylococcal/streptococcal skin coverage.",
+      pediatricMgPerKgPerDay: 40,
+      maxDailyMg: 4000,
+      frequencyPerDay: 4,
+      referenceRange: "40 mg/kg/day divided 3 to 4 times daily",
+      note: "Topical therapy may be enough for limited disease."
+    },
+    {
+      id: "simple-cystitis",
+      diagnosis: "Simple cystitis",
+      purpose: "Selected urinary tract infection coverage when appropriate.",
+      pediatricMgPerKgPerDay: 50,
+      maxDailyMg: 4000,
+      frequencyPerDay: 4,
+      referenceRange: "50 mg/kg/day divided 3 to 4 times daily",
+      note: "Check local urine susceptibility patterns."
+    }
+  ],
+  cefdinir: [
+    {
+      id: "acute-otitis-media",
+      diagnosis: "Acute otitis media",
+      purpose: "Alternative oral cephalosporin for ear infection treatment.",
+      pediatricMgPerKgPerDay: 14,
+      maxDailyMg: 600,
+      frequencyPerDay: 2,
+      referenceRange: "14 mg/kg/day once daily or divided twice daily",
+      note: "Twice-daily dosing can improve tolerance for some patients."
+    },
+    {
+      id: "sinusitis",
+      diagnosis: "Sinusitis",
+      purpose: "Alternative outpatient sinusitis treatment.",
+      pediatricMgPerKgPerDay: 14,
+      maxDailyMg: 600,
+      frequencyPerDay: 2,
+      referenceRange: "14 mg/kg/day once daily or divided twice daily",
+      note: "Use when the child is an appropriate candidate for oral cephalosporin therapy."
+    },
+    {
+      id: "community-acquired-pneumonia",
+      diagnosis: "Community-acquired pneumonia",
+      purpose: "Selected uncomplicated outpatient CAP situations.",
+      pediatricMgPerKgPerDay: 14,
+      maxDailyMg: 600,
+      frequencyPerDay: 2,
+      referenceRange: "14 mg/kg/day once daily or divided twice daily",
+      note: "Confirm local guidance for CAP organism coverage."
+    }
+  ],
+  azithromycin: [
+    {
+      id: "community-acquired-pneumonia",
+      diagnosis: "Community-acquired pneumonia",
+      purpose: "Atypical respiratory pathogen coverage.",
+      pediatricMgPerKgPerDay: 10,
+      maxDailyMg: 500,
+      frequencyPerDay: 1,
+      referenceRange: "10 mg/kg on day 1, then 5 mg/kg/day on days 2–5",
+      note: "Calculator displays the day-1 loading dose; follow-up doses are usually lower."
+    },
+    {
+      id: "bronchitis",
+      diagnosis: "Bronchitis",
+      purpose: "Selected atypical bronchitic illness coverage.",
+      pediatricMgPerKgPerDay: 10,
+      maxDailyMg: 500,
+      frequencyPerDay: 1,
+      referenceRange: "10 mg/kg on day 1, then 5 mg/kg/day on days 2–5",
+      note: "Calculator displays the day-1 loading dose; follow-up doses are usually lower."
+    },
+    {
+      id: "travelers-diarrhea",
+      diagnosis: "Traveler's diarrhea",
+      purpose: "Selected travel-related bacterial diarrhea cases.",
+      pediatricMgPerKgPerDay: 10,
+      maxDailyMg: 500,
+      frequencyPerDay: 1,
+      referenceRange: "10 mg/kg/day once daily",
+      note: "Check destination-specific resistance guidance."
+    }
+  ],
+  "sulfamethoxazole-trimethoprim": [
+    {
+      id: "mrsa-skin-infection",
+      diagnosis: "MRSA-related skin infection",
+      purpose: "MRSA-predominant skin/soft-tissue outpatient coverage.",
+      pediatricMgPerKgPerDay: 10,
+      maxDailyMg: 320,
+      frequencyPerDay: 2,
+      referenceRange: "8–12 mg/kg/day of trimethoprim divided twice daily",
+      note: "Dose is based on the trimethoprim component."
+    },
+    {
+      id: "skin-abscess",
+      diagnosis: "Skin abscess",
+      purpose: "Adjunct oral therapy for selected drained abscesses.",
+      pediatricMgPerKgPerDay: 10,
+      maxDailyMg: 320,
+      frequencyPerDay: 2,
+      referenceRange: "8–12 mg/kg/day of trimethoprim divided twice daily",
+      note: "Dose is based on the trimethoprim component."
+    },
+    {
+      id: "simple-cystitis",
+      diagnosis: "Simple cystitis",
+      purpose: "Selected urinary pathogen coverage when susceptible.",
+      pediatricMgPerKgPerDay: 8,
+      maxDailyMg: 320,
+      frequencyPerDay: 2,
+      referenceRange: "8 mg/kg/day of trimethoprim divided twice daily",
+      note: "Dose is based on the trimethoprim component."
+    }
+  ],
+  prednisolone: [
+    {
+      id: "asthma-exacerbation",
+      diagnosis: "Asthma exacerbation",
+      purpose: "Short oral steroid burst for asthma flare treatment.",
+      pediatricMgPerKgPerDay: 2,
+      maxDailyMg: 60,
+      frequencyPerDay: 2,
+      referenceRange: "1–2 mg/kg/day divided once or twice daily",
+      note: "Calculator uses the higher common urgent-care end of the range."
+    },
+    {
+      id: "viral-bronchospasm",
+      diagnosis: "Viral bronchospasm",
+      purpose: "Selected wheeze/reactive airway inflammation support.",
+      pediatricMgPerKgPerDay: 1,
+      maxDailyMg: 60,
+      frequencyPerDay: 2,
+      referenceRange: "1 mg/kg/day divided once or twice daily",
+      note: "Use only when clinically appropriate."
+    }
+  ],
+  dexamethasone: [
+    {
+      id: "croup",
+      diagnosis: "Croup",
+      purpose: "Single-dose steroid support for croup.",
+      pediatricMgPerKgPerDay: 0.6,
+      maxDailyMg: 10,
+      frequencyPerDay: 1,
+      referenceRange: "0.15–0.6 mg/kg once",
+      note: "Calculator uses the commonly referenced 0.6 mg/kg dose ceiling."
+    },
+    {
+      id: "asthma-flare",
+      diagnosis: "Asthma flare",
+      purpose: "Short steroid course alternative for asthma exacerbation.",
+      pediatricMgPerKgPerDay: 0.6,
+      maxDailyMg: 16,
+      frequencyPerDay: 1,
+      referenceRange: "0.3–0.6 mg/kg/day",
+      note: "Course length varies by setting and protocol."
+    },
+    {
+      id: "allergic-reaction",
+      diagnosis: "Allergic reaction",
+      purpose: "Adjunct steroid support in selected allergic reactions.",
+      pediatricMgPerKgPerDay: 0.6,
+      maxDailyMg: 10,
+      frequencyPerDay: 1,
+      referenceRange: "0.3–0.6 mg/kg/day",
+      note: "Use as adjunct care when clinically indicated."
+    }
+  ]
 };
 
 export function lbToKg(lb) {
@@ -97,6 +350,14 @@ export function getDosingProfile(medicationId) {
   return DOSING_PROFILES[medicationId] ?? null;
 }
 
+export function getDiagnosisGuidance(medicationId) {
+  return PEDIATRIC_DIAGNOSIS_GUIDANCE[medicationId] ?? [];
+}
+
+export function getDiagnosisGuidanceOption(medicationId, diagnosisId) {
+  return getDiagnosisGuidance(medicationId).find((option) => option.id === diagnosisId) ?? null;
+}
+
 function parseTabletStrengthMg(medication) {
   const strengths = medication?.strengths ?? [];
   const candidate = strengths.find((value) => /tablet|capsule/i.test(value) && /\d+(\.\d+)?\s*mg/i.test(value));
@@ -122,6 +383,7 @@ export function calculateRecommendedDose({
   weightKg,
   ageYears,
   frequencyPerDay,
+  diagnosisId,
   tabletStrengthMgOverride,
   liquidConcentrationMgPerMlOverride
 }) {
@@ -138,14 +400,24 @@ export function calculateRecommendedDose({
   }
 
   const ageGroup = getAgeGroup(ageYears);
+  const selectedDiagnosisGuidance = getDiagnosisGuidanceOption(medication.id, diagnosisId);
   const safeFrequency = Number.isFinite(frequencyPerDay) && frequencyPerDay > 0
     ? frequencyPerDay
-    : (profile.defaultFrequencyPerDay ?? 1);
+    : (selectedDiagnosisGuidance?.frequencyPerDay ?? profile.defaultFrequencyPerDay ?? 1);
 
   let totalDailyDoseMg = null;
   const useWeightBased = ageYears < 18 && Number.isFinite(weightKg) && weightKg > 0 && Number.isFinite(profile.pediatricMgPerKgPerDay);
+  const useDiagnosisSpecificPediatricDose = Boolean(
+    selectedDiagnosisGuidance &&
+    ageYears < 18 &&
+    Number.isFinite(weightKg) &&
+    weightKg > 0 &&
+    Number.isFinite(selectedDiagnosisGuidance.pediatricMgPerKgPerDay)
+  );
 
-  if (useWeightBased) {
+  if (useDiagnosisSpecificPediatricDose) {
+    totalDailyDoseMg = weightKg * selectedDiagnosisGuidance.pediatricMgPerKgPerDay;
+  } else if (useWeightBased) {
     totalDailyDoseMg = weightKg * profile.pediatricMgPerKgPerDay;
   } else if (Number.isFinite(profile.adultMgPerDay)) {
     totalDailyDoseMg = profile.adultMgPerDay;
@@ -160,11 +432,14 @@ export function calculateRecommendedDose({
     };
   }
 
-  if (Number.isFinite(profile.maxDailyMg)) {
-    totalDailyDoseMg = Math.min(totalDailyDoseMg, profile.maxDailyMg);
+  const maxDailyMg = selectedDiagnosisGuidance?.maxDailyMg ?? profile.maxDailyMg;
+  const minDailyMg = selectedDiagnosisGuidance?.minDailyMg ?? profile.minDailyMg;
+
+  if (Number.isFinite(maxDailyMg)) {
+    totalDailyDoseMg = Math.min(totalDailyDoseMg, maxDailyMg);
   }
-  if (Number.isFinite(profile.minDailyMg)) {
-    totalDailyDoseMg = Math.max(totalDailyDoseMg, profile.minDailyMg);
+  if (Number.isFinite(minDailyMg)) {
+    totalDailyDoseMg = Math.max(totalDailyDoseMg, minDailyMg);
   }
 
   const dosePerAdministrationMg = totalDailyDoseMg / safeFrequency;
@@ -190,8 +465,9 @@ export function calculateRecommendedDose({
   return {
     ok: true,
     profile,
+    selectedDiagnosisGuidance,
     ageGroup,
-    usedWeightBased: useWeightBased,
+    usedWeightBased: useDiagnosisSpecificPediatricDose || useWeightBased,
     frequencyPerDay: safeFrequency,
     totalDailyDoseMg: roundTo(totalDailyDoseMg, 2),
     dosePerAdministrationMg: roundTo(dosePerAdministrationMg, 2),

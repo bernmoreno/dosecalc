@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { MEDICATION_CATEGORIES, PATIENT_ICON_GUIDE } from "../data/medications";
 import DoseCalcMedicationDropdown from "../components/DoseCalcMedicationDropdown";
-import { calculateRecommendedDose, calculateBSA, lbToKg } from "../utils/dosing";
+import { calculateRecommendedDose, calculateBSA, getDiagnosisGuidance, lbToKg } from "../utils/dosing";
 
 const STORAGE_KEY = "dosecalc_entries";
 
@@ -76,6 +76,7 @@ export default function DoseCalcCalculatorTab({
   const [selectedPillStrengthKey, setSelectedPillStrengthKey] = useState("");
   const [selectedCapsuleStrengthKey, setSelectedCapsuleStrengthKey] = useState("");
   const [selectedLiquidStrengthKey, setSelectedLiquidStrengthKey] = useState("");
+  const [selectedDiagnosisId, setSelectedDiagnosisId] = useState("");
   const [patientFullName, setPatientFullName] = useState("");
   const [allowFullNameStorage, setAllowFullNameStorage] = useState(false);
   const [ageYears, setAgeYears] = useState(8);
@@ -101,6 +102,16 @@ export default function DoseCalcCalculatorTab({
     }
     return null;
   }, [selectedMedicationId, medicationCategories]);
+
+  const diagnosisGuidanceOptions = useMemo(
+    () => (selectedMedication ? getDiagnosisGuidance(selectedMedication.id) : []),
+    [selectedMedication]
+  );
+
+  const selectedDiagnosisGuidance = useMemo(
+    () => diagnosisGuidanceOptions.find((option) => option.id === selectedDiagnosisId) ?? null,
+    [diagnosisGuidanceOptions, selectedDiagnosisId]
+  );
 
   const tabletStrengthOptions = useMemo(() => {
     const strengths = selectedMedication?.strengths ?? [];
@@ -192,17 +203,28 @@ export default function DoseCalcCalculatorTab({
       weightKg,
       ageYears,
       frequencyPerDay,
+      diagnosisId: selectedDiagnosisId,
       tabletStrengthMgOverride: selectedSolidStrength?.mg,
       liquidConcentrationMgPerMlOverride: selectedLiquidStrength?.mgPerMl
     }),
-    [selectedMedication, weightKg, ageYears, frequencyPerDay, selectedSolidStrength, selectedLiquidStrength]
+    [selectedMedication, weightKg, ageYears, frequencyPerDay, selectedDiagnosisId, selectedSolidStrength, selectedLiquidStrength]
   );
 
   const bsa = useMemo(() => calculateBSA(weightKg, heightCm), [weightKg, heightCm]);
 
   useEffect(() => {
     setShowResult(false);
-  }, [selectedMedicationId, selectedAnyStrengthKey, selectedTabletStrengthKey, selectedPillStrengthKey, selectedCapsuleStrengthKey, selectedLiquidStrengthKey, patientFullName, allowFullNameStorage, ageYears, weightValue, weightUnit, frequencyPerDay, heightCm]);
+  }, [selectedMedicationId, selectedDiagnosisId, selectedAnyStrengthKey, selectedTabletStrengthKey, selectedPillStrengthKey, selectedCapsuleStrengthKey, selectedLiquidStrengthKey, patientFullName, allowFullNameStorage, ageYears, weightValue, weightUnit, frequencyPerDay, heightCm]);
+
+  useEffect(() => {
+    if (diagnosisGuidanceOptions.length > 0) {
+      if (!diagnosisGuidanceOptions.some((option) => option.id === selectedDiagnosisId)) {
+        setSelectedDiagnosisId(diagnosisGuidanceOptions[0].id);
+      }
+    } else if (selectedDiagnosisId) {
+      setSelectedDiagnosisId("");
+    }
+  }, [diagnosisGuidanceOptions, selectedDiagnosisId]);
 
   useEffect(() => {
     if (allStrengthOptions.length > 0 && !allStrengthOptions.some((option) => option.key === selectedAnyStrengthKey)) {
@@ -295,6 +317,8 @@ export default function DoseCalcCalculatorTab({
       "",
       `Patient: ${summaryPatientName}`,
       `Medication: ${selectedMedication.generic}`,
+      `Used for: ${selectedDiagnosisGuidance?.purpose ?? selectedMedication.commonUse ?? "n/a"}`,
+      `Diagnosis: ${selectedDiagnosisGuidance?.diagnosis ?? selectedMedication.diagnoses?.join(" • ") ?? "n/a"}`,
       `Category: ${selectedMedication.categoryName ?? "N/A"}`,
       `Age: ${ageYears} years`,
       `Weight: ${Number.isFinite(weightKg) ? `${weightKg.toFixed(2)} kg` : "n/a"}`,
@@ -311,6 +335,8 @@ export default function DoseCalcCalculatorTab({
       calculation.liquidMlPerDose != null
         ? `Liquid conversion: ${calculation.liquidMlPerDose} mL/dose (${calculation.liquidConcentrationMgPerMl} mg/mL)`
         : "Liquid conversion: n/a",
+      selectedDiagnosisGuidance?.referenceRange ? `Diagnosis dose reference: ${selectedDiagnosisGuidance.referenceRange}` : null,
+      selectedDiagnosisGuidance?.note ? `Diagnosis note: ${selectedDiagnosisGuidance.note}` : null,
       `Reference range: ${selectedMedication.dosingRange}`,
       Number.isFinite(bsa) ? `BSA: ${bsa.toFixed(2)} m²` : "BSA: n/a",
       "",
@@ -325,6 +351,7 @@ export default function DoseCalcCalculatorTab({
   }, [
     selectedMedication,
     calculation,
+    selectedDiagnosisGuidance,
     ageYears,
     weightKg,
     bsa,
@@ -378,9 +405,9 @@ export default function DoseCalcCalculatorTab({
 
   return (
     <section>
-      <h2>Calculator</h2>
+      <h2>{heading}</h2>
       <p className="muted">
-        Calculates dose by age + weight using mg/kg/day logic, then splits by doses/day and converts to tablets or liquid where available.
+        {description}
       </p>
 
       <div className="patient-icon-guide" aria-label="Age and patient icons">
@@ -389,7 +416,21 @@ export default function DoseCalcCalculatorTab({
         ))}
       </div>
 
-      <DoseCalcMedicationDropdown value={selectedMedicationId} onChange={setSelectedMedicationId} />
+      <DoseCalcMedicationDropdown value={selectedMedicationId} onChange={setSelectedMedicationId} label={medicationLabel} medicationCategories={medicationCategories} />
+
+      {diagnosisGuidanceOptions.length > 0 && (
+        <label className="field diagnosis-field">
+          <span>Diagnosis / antibiotic use</span>
+          <select value={selectedDiagnosisId} onChange={(e) => setSelectedDiagnosisId(e.target.value)}>
+            {diagnosisGuidanceOptions.map((option) => (
+              <option key={option.id} value={option.id}>{option.diagnosis}</option>
+            ))}
+          </select>
+          <small className="muted diagnosis-helper">
+            {selectedDiagnosisGuidance?.purpose}
+          </small>
+        </label>
+      )}
 
       <div className="form-grid">
         <label className="field">
@@ -534,6 +575,8 @@ export default function DoseCalcCalculatorTab({
       {selectedMedication && calculation.ok && showResult ? (
         <div className="card">
           <h3>{selectedMedication.generic}</h3>
+          <p><strong>Used for:</strong> {selectedDiagnosisGuidance?.purpose ?? selectedMedication.commonUse}</p>
+          {selectedDiagnosisGuidance && <p><strong>Diagnosis selected:</strong> {selectedDiagnosisGuidance.diagnosis}</p>}
           <p><strong>Patient:</strong> {patientFullName.trim() || "Unknown Patient"}</p>
           {!allowFullNameStorage && <p className="muted"><strong>Privacy:</strong> Saved records use de-identified patient name by default.</p>}
           <p><strong>Category:</strong> {selectedMedication.categoryName ?? "N/A"}</p>
@@ -555,6 +598,8 @@ export default function DoseCalcCalculatorTab({
           )}
 
           <p><strong>Reference range:</strong> {selectedMedication.dosingRange}</p>
+          {selectedDiagnosisGuidance?.referenceRange && <p><strong>Diagnosis dose reference:</strong> {selectedDiagnosisGuidance.referenceRange}</p>}
+          {selectedDiagnosisGuidance?.note && <p className="muted"><strong>Diagnosis note:</strong> {selectedDiagnosisGuidance.note}</p>}
           <p><strong>BSA (Mosteller):</strong> {Number.isFinite(bsa) ? `${bsa.toFixed(2)} m²` : "Enter valid height/weight"}</p>
 
           <div className="rule-grid">

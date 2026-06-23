@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  FaHome,
   FaCalculator,
   FaExchangeAlt,
   FaHistory,
@@ -18,10 +19,12 @@ import ByWeightTab from "./tabs/ByWeightTab";
 import SettingsTab from "./tabs/SettingsTab";
 import MedicationCategoriesTab from "./tabs/MedicationCategoriesTab";
 import MostCommonMedsTab from "./tabs/MostCommonMedsTab";
+import PediatricMedsTab from "./tabs/PediatricMedsTab";
+import MainPageTab from "./tabs/MainPageTab";
 import "./App.css";
 
 function App() {
-  const [activeTab, setActiveTab] = useState("calculator");
+  const [activeTab, setActiveTab] = useState("main");
   const [convertMedicationId, setConvertMedicationId] = useState("");
   const [calculatorMedicationId, setCalculatorMedicationId] = useState("");
   const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
@@ -124,6 +127,12 @@ function App() {
       <nav className="app-tabs" aria-label="Main tabs">
         <button
           type="button"
+          className={`tab-btn tab-main ${activeTab === "main" ? "is-active" : ""}`}
+          onClick={() => setActiveTab("main")}
+          aria-current={activeTab === "main" ? "page" : undefined}
+        ><FaHome /> Main</button>
+        <button
+          type="button"
           className={`tab-btn tab-calculator ${activeTab === "calculator" ? "is-active" : ""}`}
           onClick={() => setActiveTab("calculator")}
           aria-current={activeTab === "calculator" ? "page" : undefined}
@@ -146,6 +155,12 @@ function App() {
           onClick={() => setActiveTab("common")}
           aria-current={activeTab === "common" ? "page" : undefined}
         ><FaPills /> Most Common</button>
+        <button
+          type="button"
+          className={`tab-btn tab-pediatric ${activeTab === "pediatric" ? "is-active" : ""}`}
+          onClick={() => setActiveTab("pediatric")}
+          aria-current={activeTab === "pediatric" ? "page" : undefined}
+        ><FaBaby /> Pediatric Meds</button>
         <button
           type="button"
           className={`tab-btn tab-categories ${activeTab === "categories" ? "is-active" : ""}`}
@@ -173,10 +188,12 @@ function App() {
       </nav>
 
       <main className="app-content">
+        {activeTab === "main" && <MainPageTab initialCalculatorMedicationId={calculatorMedicationId} />}
         {activeTab === "calculator" && <DoseCalcCalculatorTab initialMedicationId={calculatorMedicationId} />}
         {activeTab === "convert" && <ConvertTab initialMedicationId={convertMedicationId} />}
         {activeTab === "saved" && <SavedDataTab />}
         {activeTab === "common" && <MostCommonMedsTab />}
+        {activeTab === "pediatric" && <PediatricMedsTab />}
         {activeTab === "categories" && (
           <MedicationCategoriesTab
             onConvertMedication={handleConvertMedication}

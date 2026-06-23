@@ -8,8 +8,16 @@ A React medication dosing assistant focused on age/weight calculations, dose fre
 
 - Medication selector with categories and medication icons.
 - Most Common Meds tab for urgent-care favorites and faster access.
+- Pediatric Meds tab with grouped pediatric urgent-care medication lists and high-yield dosing references.
 - Medication dropdown now displays all listed strengths for each medication.
-- Color-coded navigation tabs for faster visual scanning.
+- Folder-style, darker high-contrast navigation tabs using the Adobe palette for faster visual scanning.
+- Main page with two floating sections: Calculator and Pediatric Medicine.
+- Embedded "My Manual Calculator" frame at the bottom of the main page with a fallback link to the standalone calculator.
+- Main page redesigned with compact medicine buttons, a full calculator on the right, and a floating in-page Epocrates external-reference viewer with dark controls.
+- Main page now includes a Pediatric Medicine quick section directly below Most Common Medicines, with section colors matched to their tab themes.
+- Pediatric antibiotic workflow now shows diagnosis-specific dosing guidance in both the pediatric reference area and the calculator when supported.
+- Bottom manual calculator app restored, with a full embedded view and mobile-friendly floating behavior near the bottom of the main page.
+- Responsive layout tuned for small Android phones, iPhones, and mobile browsers with stacked panels, scrollable tabs, and touch-friendly controls.
 - Mobile-first responsive layout tuned for smartphones and iPhones (safe-area spacing + touch-friendly controls).
 - **Weight-based dose math**:
   - convert lb → kg
@@ -77,19 +85,42 @@ $$
 
 ## Tabs overview
 
+- **Main**: landing page with two floating sections for Calculator and Pediatric Medicine.
+- **Main**: includes a Most Common Medicines section and a Pediatric Medicine quick section stacked on the left, each styled to match its corresponding tab color.
+- **Most Common Medicines**: compact button list showing 5 common meds first, with a More button for the rest and a linked detail panel.
+- **Calculator**: full calculator view on the right side with extra padding for easier use.
+- **External Link**: floating public-reference viewer under the calculator with dark visible link buttons, an in-page scroll/view area, and an explicit **Open new tab** fallback.
+- **Pediatric diagnosis dosing**: supported pediatric antibiotics and selected respiratory medications now show indication-specific dosing ranges and notes.
+- **Manual Calculator App**: full embedded calculator at the bottom of the page, with mobile sticky-bottom behavior for quicker access.
+- **My Manual Calculator**: framed external calculator at the bottom of the Main page for quick manual math checks.
 - **Calculator**: select medication + age + weight + frequency and get calculated result.
+
+## Mobile and browser support
+
+- Optimized for narrow mobile screens with stacked content panels and single-column cards where needed.
+- Sticky, horizontally scrollable tab navigation on smaller phones to reduce crowding.
+- Touch-friendly buttons and inputs sized to work better on iPhone Safari, Chrome on Android, and other modern mobile browsers.
+- Production build tested locally after the responsive updates.
+
+## Deployment
+
+- GitHub Pages deployment is handled by GitHub Actions.
+- Every push to `main` or `master` automatically builds and deploys the latest app to GitHub Pages.
+- The repo now uses a single React app deployment workflow for Pages.
+- Local changes are published to the GitHub Pages site after they are committed and pushed to the repository.
   - medication dropdown includes all listed strengths for quick review
   - includes an "All available medication strengths" dropdown
   - shows separated strength dropdowns by form: tablet, pill, capsule, and liquid
   - conversion results use selected strengths for more accurate dosing conversion
   - includes age/person icon guide: infant, teens, female, male, adult, senior
-- **Convert**: convert mg/day into per-dose mg, tablets/pills, and mL.
+- **Convert**: convert mg/day into per-dose mg, tablets/pills, and mL, plus use supported age/weight/diagnosis guidance to show correct tablet-to-liquid and pill-to-liquid equivalents for the selected medication.
   - choose source form and target form (tablet/pill/liquid)
   - choose strength from medication strength dropdowns
   - alert reminder: "double check input before submitting result"
 - **Categories**: browse all medications by category with strengths/forms.
   - each medication card is clickable and includes Calculate/Convert buttons
 - **Most Common Meds**: quick urgent-care medication list that loads the calculator and highlights dose plus tablet/liquid equivalents.
+- **Pediatric Meds**: grouped pediatric urgent-care lists for antibiotics, respiratory, allergy/rash, eye/ear, and skin medications, plus a focused pediatric dosing calculator for high-yield meds.
 - **By Age**: age-group-oriented workflow with dose output.
 - **By Weight**: mg/kg/day-focused workflow.
 - **Saved**: previously saved calculation snapshots.

@@ -17,6 +17,7 @@ export const MEDICATION_CATEGORIES = [
       { id: "metronidazole", generic: "Metronidazole", icon: "💊", commonUse: "Anaerobic and GI infections", forms: ["Tablet", "IV", "Liquid"], strengths: ["250 mg tablet", "500 mg tablet", "500 mg IV", "50 mg/mL liquid"], dosingRange: "500 mg IV/PO every 8 hours" },
       { id: "clindamycin", generic: "Clindamycin", icon: "💊", commonUse: "Skin and anaerobic coverage", diagnoses: ["Dental infection", "Cellulitis", "Skin abscess"], forms: ["Capsule", "IV", "Liquid"], strengths: ["150 mg capsule", "300 mg capsule", "600 mg IV", "900 mg IV", "75 mg/5 mL liquid"], dosingRange: "600–900 mg IV every 8 hours", urgentCareCommon: true },
       { id: "doxycycline", generic: "Doxycycline", icon: "💊", commonUse: "Respiratory, skin, tick-borne, acne-related infections", diagnoses: ["Pneumonia", "Cellulitis/MRSA coverage", "Tick-borne illness"], forms: ["Tablet", "Capsule", "Liquid"], strengths: ["50 mg capsule", "100 mg capsule", "100 mg tablet", "25 mg/5 mL liquid"], dosingRange: "100 mg every 12 hours", urgentCareCommon: true },
+      { id: "cefdinir", generic: "Cefdinir", icon: "💊", commonUse: "Otitis media alternative, sinusitis, respiratory infections", diagnoses: ["Acute otitis media", "Sinusitis", "Community-acquired pneumonia"], forms: ["Capsule", "Liquid"], strengths: ["300 mg capsule", "125 mg/5 mL liquid", "250 mg/5 mL liquid"], dosingRange: "14 mg/kg/day divided once or twice daily", urgentCareCommon: true },
       { id: "sulfamethoxazole-trimethoprim", generic: "Sulfamethoxazole/Trimethoprim", icon: "💊", commonUse: "Skin infections, UTIs, MRSA coverage", diagnoses: ["Skin abscess", "Simple cystitis", "MRSA-related skin infection"], forms: ["Tablet", "Liquid"], strengths: ["400/80 mg tablet", "800/160 mg tablet", "200/40 mg per 5 mL liquid"], dosingRange: "800/160 mg every 12 hours", urgentCareCommon: true },
       { id: "nitrofurantoin", generic: "Nitrofurantoin", icon: "💊", commonUse: "Lower urinary tract infection", diagnoses: ["Simple cystitis"], forms: ["Capsule", "Liquid"], strengths: ["50 mg capsule", "100 mg capsule", "25 mg/5 mL liquid"], dosingRange: "100 mg every 12 hours", urgentCareCommon: true },
       { id: "oseltamivir", generic: "Oseltamivir", icon: "💊", commonUse: "Influenza treatment and exposure prophylaxis", diagnoses: ["Influenza A/B"], forms: ["Capsule", "Liquid"], strengths: ["30 mg capsule", "45 mg capsule", "75 mg capsule", "6 mg/mL liquid"], dosingRange: "75 mg every 12 hours", urgentCareCommon: true }
@@ -62,6 +63,7 @@ export const MEDICATION_CATEGORIES = [
       { id: "duoneb", generic: "DuoNeb", icon: "🌬️", commonUse: "Combined bronchodilator", forms: ["Nebulizer"], strengths: ["2.5 mg/0.5 mg per 3 mL"], dosingRange: "Neb every 4–6 hours" },
       { id: "budesonide", generic: "Budesonide", icon: "🌬️", commonUse: "Airway inflammation", forms: ["Nebulizer"], strengths: ["0.25 mg/2 mL", "0.5 mg/2 mL"], dosingRange: "0.5–1 mg daily" },
       { id: "prednisone", generic: "Prednisone", icon: "🌬️", commonUse: "COPD/asthma exacerbation", diagnoses: ["Asthma exacerbation", "COPD flare", "Allergic inflammation"], forms: ["Tablet", "Liquid"], strengths: ["5 mg tablet", "10 mg tablet", "20 mg tablet", "5 mg/5 mL liquid"], dosingRange: "20–60 mg daily", urgentCareCommon: true },
+      { id: "prednisolone", generic: "Prednisolone", icon: "🌬️", commonUse: "Pediatric asthma exacerbation, croup, airway inflammation", diagnoses: ["Asthma exacerbation", "Viral bronchospasm", "Croup"], forms: ["Liquid", "Tablet"], strengths: ["15 mg/5 mL liquid", "5 mg tablet", "15 mg/5 mL oral solution"], dosingRange: "1–2 mg/kg/day depending indication", urgentCareCommon: true },
       { id: "dexamethasone", generic: "Dexamethasone", icon: "🌬️", commonUse: "Croup, asthma, allergic inflammation", diagnoses: ["Croup", "Asthma flare", "Allergic reaction"], forms: ["Tablet", "Liquid", "IV", "IM"], strengths: ["0.5 mg tablet", "2 mg tablet", "4 mg tablet", "1 mg/mL liquid", "4 mg/mL injection"], dosingRange: "0.15–0.6 mg/kg/day depending indication", urgentCareCommon: true }
     ]
   },
@@ -134,8 +136,23 @@ export const MEDICATION_CATEGORIES = [
       { id: "senna", generic: "Senna", icon: "🏥", commonUse: "Constipation regimen", forms: ["Tablet", "Liquid"], strengths: ["8.6 mg tablet", "8.8 mg/5 mL liquid"], dosingRange: "8.6–17.2 mg at bedtime" },
       { id: "docusate", generic: "Docusate", icon: "🏥", commonUse: "Stool softener", forms: ["Capsule", "Liquid"], strengths: ["100 mg capsule", "50 mg/5 mL liquid"], dosingRange: "100 mg 1–2 times daily" },
       { id: "cetirizine", generic: "Cetirizine", icon: "🌼", commonUse: "Allergic rhinitis, urticaria", diagnoses: ["Seasonal allergies", "Urticaria", "Pruritus"], forms: ["Tablet", "Liquid"], strengths: ["5 mg tablet", "10 mg tablet", "5 mg/5 mL liquid"], dosingRange: "5–10 mg daily", urgentCareCommon: true },
+      { id: "loratadine", generic: "Loratadine", icon: "🌼", commonUse: "Pediatric allergic rhinitis and itching", diagnoses: ["Seasonal allergies", "Pruritus", "Allergic rhinitis"], forms: ["Tablet", "Liquid"], strengths: ["5 mg chewable tablet", "10 mg tablet", "5 mg/5 mL liquid"], dosingRange: "5–10 mg daily", urgentCareCommon: true },
+      { id: "hydroxyzine", generic: "Hydroxyzine", icon: "🌼", commonUse: "Pruritus and allergic rash", diagnoses: ["Urticaria", "Pruritus", "Allergic rash"], forms: ["Tablet", "Liquid"], strengths: ["10 mg tablet", "25 mg tablet", "10 mg/5 mL liquid"], dosingRange: "0.5–1 mg/kg every 6–8 hours as needed", urgentCareCommon: true },
       { id: "benzonatate", generic: "Benzonatate", icon: "🫁", commonUse: "Cough suppression", diagnoses: ["Acute cough", "Bronchitis-associated cough"], forms: ["Capsule"], strengths: ["100 mg capsule", "200 mg capsule"], dosingRange: "100–200 mg three times daily", urgentCareCommon: true },
       { id: "mupirocin", generic: "Mupirocin", icon: "🧴", commonUse: "Topical skin infection treatment", diagnoses: ["Impetigo", "Localized skin infection"], forms: ["Topical Ointment"], strengths: ["2% ointment"], dosingRange: "Apply topically 2–3 times daily", urgentCareCommon: true }
+    ]
+  },
+  {
+    id: "pediatric-eye-ear-skin",
+    category: "Pediatric Eye, Ear & Skin",
+    icon: "👂",
+    medications: [
+      { id: "triamcinolone-topical", generic: "Triamcinolone Cream", icon: "🧴", commonUse: "Inflammatory rash treatment", diagnoses: ["Eczema flare", "Allergic rash", "Contact dermatitis"], forms: ["Topical Cream", "Topical Ointment"], strengths: ["0.025% cream", "0.1% cream", "0.1% ointment"], dosingRange: "Apply thin layer 1–2 times daily", urgentCareCommon: true },
+      { id: "ofloxacin-otic", generic: "Ofloxacin Otic", icon: "👂", commonUse: "Otitis externa and tympanostomy tube otorrhea", diagnoses: ["Otitis externa", "Ear drainage"], forms: ["Otic Drops"], strengths: ["0.3% otic solution"], dosingRange: "Instill drops twice daily per age/indication", urgentCareCommon: true },
+      { id: "ciprodex", generic: "Ciprofloxacin/Dexamethasone (Ciprodex)", icon: "👂", commonUse: "Otitis externa and otorrhea", diagnoses: ["Otitis externa", "Tympanostomy tube otorrhea"], forms: ["Otic Drops"], strengths: ["0.3%/0.1% otic suspension"], dosingRange: "Instill 4 drops twice daily", urgentCareCommon: true },
+      { id: "polytrim", generic: "Polymyxin B/Trimethoprim (Polytrim)", icon: "👁️", commonUse: "Bacterial conjunctivitis treatment", diagnoses: ["Bacterial conjunctivitis"], forms: ["Eye Drops"], strengths: ["10,000 unit/1 mg per mL ophthalmic solution"], dosingRange: "1 drop every 3 hours while awake (max 6 doses/day)", urgentCareCommon: true },
+      { id: "erythromycin-ophthalmic", generic: "Erythromycin Ophthalmic Ointment", icon: "👁️", commonUse: "Conjunctivitis and eyelid infection treatment", diagnoses: ["Bacterial conjunctivitis", "Blepharitis"], forms: ["Ophthalmic Ointment"], strengths: ["0.5% ophthalmic ointment"], dosingRange: "Apply ribbon up to 4 times daily", urgentCareCommon: true },
+      { id: "nystatin", generic: "Nystatin", icon: "🧴", commonUse: "Candidal diaper rash and oral thrush treatment", diagnoses: ["Candidal diaper dermatitis", "Oral thrush"], forms: ["Topical Cream", "Oral Suspension"], strengths: ["100,000 unit/g cream", "100,000 unit/mL oral suspension"], dosingRange: "Apply or swish/swallow 4 times daily depending indication", urgentCareCommon: true }
     ]
   }
 ];
@@ -159,6 +176,76 @@ export const MOST_COMMON_URGENT_CARE_MED_IDS = [
   "cetirizine",
   "benzonatate",
   "naloxone"
+];
+
+export const PEDIATRIC_DOSING_PRIORITY_IDS = [
+  "amoxicillin",
+  "amoxicillin-clavulanate",
+  "cefdinir",
+  "cephalexin",
+  "azithromycin",
+  "sulfamethoxazole-trimethoprim",
+  "albuterol",
+  "prednisolone",
+  "dexamethasone",
+  "cetirizine"
+];
+
+export const PEDIATRIC_URGENT_CARE_GROUPS = [
+  {
+    id: "antibiotics",
+    title: "Antibiotics",
+    icon: "🦠",
+    items: [
+      { medicationId: "amoxicillin", label: "Amoxicillin", useCases: ["Acute otitis media", "Strep pharyngitis", "Community-acquired pneumonia"] },
+      { medicationId: "amoxicillin-clavulanate", label: "Amoxicillin-clavulanate", useCases: ["Otitis media", "Sinusitis", "Animal bites"] },
+      { medicationId: "cefdinir", label: "Cefdinir", useCases: ["Alternative for otitis media", "Sinusitis"] },
+      { medicationId: "cephalexin", label: "Cephalexin", useCases: ["Cellulitis", "Impetigo"] },
+      { medicationId: "azithromycin", label: "Azithromycin", useCases: ["Atypical pneumonia", "Pertussis exposure"] },
+      { medicationId: "sulfamethoxazole-trimethoprim", label: "Trimethoprim-sulfamethoxazole (Bactrim)", useCases: ["MRSA skin infections", "Selected UTIs"] }
+    ]
+  },
+  {
+    id: "respiratory",
+    title: "Respiratory",
+    icon: "🫁",
+    items: [
+      { medicationId: "albuterol", label: "Albuterol", useCases: ["Wheezing", "Asthma exacerbations", "Viral bronchospasm"] },
+      { medicationId: "prednisolone", label: "Prednisolone", useCases: ["Asthma exacerbations", "Croup (occasionally)"] },
+      { medicationId: "dexamethasone", label: "Dexamethasone", useCases: ["Croup", "Asthma exacerbations"] }
+    ]
+  },
+  {
+    id: "allergy-rash",
+    title: "Allergy / Rash",
+    icon: "🌼",
+    items: [
+      { medicationId: "cetirizine", label: "Cetirizine", useCases: ["Allergic rhinitis", "Urticaria"] },
+      { medicationId: "loratadine", label: "Loratadine", useCases: ["Allergic rhinitis", "Pruritus"] },
+      { medicationId: "hydroxyzine", label: "Hydroxyzine", useCases: ["Pruritus", "Allergic rash"] },
+      { medicationId: "triamcinolone-topical", label: "Triamcinolone", useCases: ["Eczema flare", "Contact dermatitis"] }
+    ]
+  },
+  {
+    id: "eye-ear",
+    title: "Eye / Ear",
+    icon: "👂",
+    items: [
+      { medicationId: "ofloxacin-otic", label: "Ofloxacin ear drops", useCases: ["Otitis externa", "Otorrhea"] },
+      { medicationId: "ciprodex", label: "Ciprofloxacin-dexamethasone ear drops", useCases: ["Otitis externa", "Ear drainage with tubes"] },
+      { medicationId: "polytrim", label: "Polymyxin B/trimethoprim eye drops", useCases: ["Bacterial conjunctivitis"] },
+      { medicationId: "erythromycin-ophthalmic", label: "Erythromycin ophthalmic ointment", useCases: ["Conjunctivitis", "Blepharitis"] }
+    ]
+  },
+  {
+    id: "skin",
+    title: "Skin",
+    icon: "🧴",
+    items: [
+      { medicationId: "mupirocin", label: "Mupirocin", useCases: ["Impetigo", "Localized skin infection"] },
+      { medicationId: "nystatin", label: "Nystatin", useCases: ["Candidal diaper rash", "Thrush"] }
+    ]
+  }
 ];
 
 export const AGE_GROUPS = [
